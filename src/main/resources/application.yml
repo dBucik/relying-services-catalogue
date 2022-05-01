@@ -1,0 +1,48 @@
+---
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  error:
+    path: '/error'
+
+app:
+  # Enabled locales locale - use two character code
+  #enabled_locales: ['en', 'cs']
+  enabled_locales: ['en']
+  # Default locale - use two character code
+  default_locale: "en"
+  # Files in the directory must be named in a standard Java resource bundle manner. The filename must be "messages".
+  # Example files - (EN) messages_en.properties, (CS) messages_cs.properties, (default) messages.properties
+  localization_files_directory: /etc/rp-services-catalogue/locale/
+  # Files in the directory must be named according to the templates defined in the resources/templates folder.
+  # These templates will be looked at first, and if they are not found, system will use bundled templates instead.
+  template_files_directory: /etc/rp-services-catalogue/templates/
+  # Files in the directory must be reflect the requested resource paths. All paths in your templates and fragments
+  # should use the local files need to be generated as @{/locale/your/resource.example}
+  # These templates will be looked at first, and if they are not found, system will use bundled templates instead.
+  static_resources_directory: /etc/rp-services-catalogue/static/
+  admin_entitlements: ['urn:geant:cesnet.cz:res:testCap1#perun.cesnet.cz']
+  admin_subs: []
+  support_email: "test@example.org"
+
+oidc:
+  issuer: 'https://login.cesnet.cz/oidc/'
+  registrationId: 'cesnet'
+  client-id: '6d6d5d16-6d42-4d14-8da8-393b7268c780'
+  client-secret: ''
+  scopes: ['openid', 'profile', 'eduperson_entitlement']
+  redirect_uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+  username_attribute: 'sub'
+
+mongo:
+  username: 'test'
+  password: 'test'
+  database: 'test'
+  uri: 'mongodb://localhost'
+
+logging:
+  level:
+    cz.muni.ics: DEBUG
+    org.springframework: INFO

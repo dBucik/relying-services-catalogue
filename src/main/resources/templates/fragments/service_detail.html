@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="d-flex flex-column">
+
+<ul class="nav nav-tabs" id="serviceDetailTab" role="tablist" th:fragment="panes_nav()">
+    <li class="nav-item" role="presentation" th:each="locale_key : ${locales}" th:with="active=${#strings.equalsIgnoreCase(locale_key, #locale.language)}">
+        <a class="nav-link" id="tab-example" aria-current="page" aria-controls="tab-1" href="#tab-1"
+           data-bs-toggle="tab" role="tab"
+           th:class="${active} ? 'nav-link active' : 'nav-link'"
+           th:id="${locale_key + '-tab'}"
+           th:href="@{#tab-{locale}(locale=${locale_key})}"
+           th:aria-controls="${'tab-' + locale_key}"
+           th:aria-selected="${active}"
+           th:text="#{'nav.locale.' + ${locale_key}}">English</a>
+    </li>
+</ul>
+
+<div class="tab-content p-0" id="serviceDetailTabContent" th:fragment="panes_content(service)">
+    <div class="tab-pane" id="tab-1" role="tabpanel" th:each="locale_key : ${locales}"
+         th:with="active=${#strings.equalsIgnoreCase(locale_key, #locale.language)}"
+         th:id="${'tab-' + locale_key}"
+         th:class="${active} ? 'tab-pane fade show active' : 'tab-pane fade'"
+         th:aria-labbeledby="${locale_key + '-tab'}">
+        <div class="accordion" th:replace=" fragments/service_detail.html :: service_accordion(${service}, ${locale_key})"></div>
+    </div>
+</div>
+
+<div class="accordion" th:fragment="service_accordion(service, locale_key)">
+    <div class="accordion-item" th:replace="fragments/service_detail.html :: service_panel(${service}, ${locale_key})"></div>
+    <div class="accordion-item" th:replace="fragments/service_detail.html :: organization_panel(${service}, ${locale_key})"></div>
+    <div class="accordion-item" th:replace="fragments/service_detail.html :: contacts_panel(${service}, ${locale_key})"></div>
+</div>
+
+<div class="accordion-item" th:fragment="service_panel(service, locale_key)">
+    <h2 class="accordion-header" id="panel-service-heading">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-service"
+                aria-expanded="true" aria-controls="panel-service" th:text="#{service_detail.section.service_details.heading}">Service details</button>
+    </h2>
+    <div id="panel-service" class="accordion-collapse collapse fade show" aria-labelledby="panel-service-heading">
+        <div class="accordion-body container">
+            <div class="row">
+                <div class="col-12">
+                    <div th:replace=" fragments/service_detail.html :: multilang_text_value(${service.name}, 'service_detail.section.service_details.name')"></div>
+                    <div th:replace=" fragments/service_detail.html :: multilang_text_value(${service.description}, 'service_detail.section.service_details.description')"></div>
+                    <div th:if="${showEnvironment}">
+                        <b th:text="#{service_detail.section.service_details.environment}">Environment:</b>
+                        <span th:text="#{${'service_detail.section.service_details.environment.value.' + service.environment.toLowerCase()}}">TESTING</span>
+                    </div>
+                    <div th:replace=" fragments/service_detail.html :: text_value(${service.rpIdentifier}, 'service_detail.section.service_details.rp_identifier')"></div>
+                </div>
+            </div>
+            <hr class="mb-3"/>
+            <div class="row">
+                <div class="col-12 col-md-6 mb-4 mb-md-0">
+                    <div th:replace=" fragments/service_detail.html :: link_value(${service.loginUrl}, 'service_detail.section.service_details.login_url')"></div>
+                    <div th:replace=" fragments/service_detail.html :: link_value(${service.websiteUrl}, 'service_detail.section.service_details.website')"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: text_value(${service.jurisdiction}, 'service_detail.section.service_details.jurisdiction')"></div>
+                    <div th:replace=" fragments/service_detail.html :: multilang_link_value(${service.privacyPolicy}, 'service_detail.section.service_details.privacy_policy')"></div>
+                    <div th:replace=" fragments/service_detail.html :: multilang_link_value(${service.aupTos}, 'service_detail.section.service_details.aup_tos')"></div>
+                    <div th:replace=" fragments/service_detail.html :: multilang_link_value(${service.incidentResponsePolicy}, 'service_detail.section.service_details.incident_response_policy')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item" th:fragment="organization_panel(service, locale_key)">
+    <h2 class="accordion-header" id="panel-organization-heading">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-organization"
+                aria-expanded="true" aria-controls="panel-service" th:text="#{service_detail.section.providing_organization.heading}">Providing organization</button>
+    </h2>
+    <div id="panel-organization" class="accordion-collapse collapse show" aria-labelledby="panel-organization-heading">
+        <div class="accordion-body container">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: multilang_text_value(${service.providingOrganization}, 'service_detail.section.providing_organization.name')"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: multilang_link_value(${service.providingOrganizationWebsite}, 'service_detail.section.providing_organization.website')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item" th:fragment="contacts_panel(service, locale_key)">
+    <h2 class="accordion-header" id="panel-contacts-heading">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-contacts"
+                aria-expanded="true" aria-controls="panel-service" th:text="#{service_detail.section.contacts.heading}">Contacts</button>
+    </h2>
+    <div id="panel-contacts" class="accordion-collapse collapse show" aria-labelledby="panel-contacts-heading">
+        <div class="accordion-body container">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: mail_value(${service.helpdeskContact}, 'service_detail.section.contacts.helpdesk_contact')"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: mail_value(${service.administrativeContact}, 'service_detail.section.contacts.administrative_contact')"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: mail_value(${service.technicalContact}, 'service_detail.section.contacts.technical_contact')"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div th:replace=" fragments/service_detail.html :: mail_value(${service.securityContact}, 'service_detail.section.contacts.security_contact')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:fragment="multilang_text_value(field, item_t_key)" th:with="value=${field?.getOrDefault(locale_key, null)}">
+    <th:block  th:replace="fragments/service_detail.html :: text_value(${value}, ${item_t_key})"></th:block>
+</th:block>
+
+<th:block th:fragment="multilang_link_value(field, item_t_key)" th:with="value=${field?.getOrDefault(locale_key, null)}">
+    <th:block th:replace="fragments/service_detail.html :: link_value(${value}, ${item_t_key})"></th:block>
+</th:block>
+
+<th:block th:fragment="multilang_mail_value(field, item_t_key)" th:with="value=${field?.getOrDefault(locale_key, null)}">
+    <th:block th:replace=" fragments/service_detail.html :: mail_value(${value}, ${item_t_key})"></th:block>
+</th:block>
+
+<th:block th:fragment="link_value(value, item_t_key)">
+    <th:block th:replace=" fragments/service_detail.html :: link_gen_value(${value}, ${value}, ${item_t_key})"></th:block>
+</th:block>
+
+<th:block th:fragment="mail_value(value, item_t_key)">
+    <th:block th:replace=" fragments/service_detail.html :: link_gen_value(${value}, ${'mailto:' + value}, ${item_t_key})"></th:block>
+</th:block>
+
+<div th:fragment="text_value(value, item_t_key)">
+    <b th:text="#{${item_t_key}}">Name:</b>
+    <span th:if="${value == null}" th:text="#{not_defined}">https://www.google.com</span>
+    <span th:unless="${value == null}" th:text="${value}">EMBL-EBI</span>
+</div>
+
+<div th:fragment="link_gen_value(value, link, item_t_key)">
+    <b th:text="#{${item_t_key}}">Website:</b>
+    <span th:if="${value == null}" th:text="#{not_defined}">https://www.google.com</span>
+    <a th:unless="${value == null}" th:href="${link}" th:text="${value}" href="#" target="_blank">https://www.google.com</a>
+</div>
+
+</body>
+</html>

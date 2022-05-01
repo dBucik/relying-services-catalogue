@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/general.html :: head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Services list</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body class="d-flex flex-column">
+<!-- NAVBAR -->
+<nav th:replace="fragments/general.html :: navbar"></nav>
+<div class="container flex-grow-1" th:object="${service}">
+    <!-- HEADER -->
+    <header class="row mt-3 mb-3">
+        <div class="col-12" th:classappend="${#authorization.expr('hasRole(''ROLE_ADMIN'')')} ? 'col-md-9'" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
+            <h2 th:text="#{service_detail.header.heading(${service.id}, ${name ?: notdefined})}">Service #1: Test service</h2>
+            <p th:if="${showEnvironment}" th:utext="#{${'service_detail.header.environment.' + service.environment}}"><b>Environment:</b> production</p>
+            <p th:text="${service.description?.getOrDefault(#locale.language, null)} ?: ${service.description?.getOrDefault(defaultLocale, notdefined)}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        <div class="col-12 col-md-3" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="d-grid gap-2">
+                <a href="#" class="btn btn-primary" th:href="@{/admin/update/{id}(id=${service.id})}" th:text="#{service_detail.header.button_modify}">Modify</a>
+                <a href="#" class="btn btn-danger" th:href="@{/admin/remove/{id}(id=${service.id})}" th:text="#{service_detail.header.button_remove}">Remove</a>
+            </div>
+        </div>
+        <div class="col-12">
+            <hr/>
+        </div>
+    </header>
+    <!-- MAIN CONTENT -->
+    <div class="row mb-5">
+        <div th:if="${#lists.size(locales) > 1}">
+            <ul class="nav nav-tabs" id="serviceDetailTab" role="tablist" th:replace="fragments/service_detail.html :: panes_nav"></ul>
+            <div class="tab-content p-0" id="serviceDetailTabContent" th:replace="fragments/service_detail.html :: panes_content(${service})"></div>
+        </div>
+        <div th:unless="${#lists.size(locales) > 1}">
+            <div class="accordion" th:replace=" fragments/service_detail.html :: service_accordion(${service}, ${defaultLocale})"></div>
+        </div>
+    </div>
+</div>
+<!-- FOOTER -->
+<footer th:replace="fragments/general.html :: footer"></footer>
+<th:block th:replace="fragments/general.html :: scripts"></th:block>
+</body>
+</html>

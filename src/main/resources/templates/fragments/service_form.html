@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="d-flex flex-column">
+
+<div class="mb-3" th:fragment="input_language_aware(field, label_t_key, type)">
+  <div th:if="${#lists.size(locales) > 1}">
+    <p class="form-label" th:text="#{${label_t_key}}">Language input</p>
+    <div class="form-floating mb-2" th:each="locale_key : ${locales}">
+      <input type="text" class="form-control small" placeholder="" id="input" th:type="${type}" th:id="${field + '-' + locale_key}" th:field="*{__${field}__[__${locale_key}__]}">
+      <label for="input" class="text-muted" th:for="${field + '-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
+    </div>
+  </div>
+  <div th:unless="${#lists.size(locales) > 1}">
+    <label for="name" class="form-label" th:text="#{${label_t_key}}">Service name</label>
+    <input type="text" th:type="${type}" class="form-control" id="name" name="name" th:field="*{__${field}__[__${defaultLocale}__]}">
+  </div>
+</div>
+
+<div class="mb-3" th:fragment="input_simple(field, label_t_key, type)">
+  <label for="input2" class="form-label" th:for="${'input-' + field}" th:text="#{${label_t_key}}">Simple input</label>
+  <input type="text" class="form-control" id="input2" name="input2" th:type="${type}" th:id="${'input-' + field}" th:name="${'input-' + name}" th:field="*{__${field}__}">
+</div>
+
+</body>
+</html>

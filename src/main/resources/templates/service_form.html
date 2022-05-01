@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/general.html :: head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Services list</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body class="d-flex flex-column">
+<!-- NAVBAR -->
+<nav th:replace="fragments/general.html :: navbar"></nav>
+<div class="container flex-grow-1" th:with="formAction=${service.id == null ? '/admin/create' : '/admin/update/' + service.id}">
+    <!-- HEADER -->
+    <header class="row mt-3 mb-3" th:if="${service.id == null}">
+        <h1 class="col-12 text-center" th:text="#{service_form.header.heading.create}">List of Services</h1>
+        <p class="col-12 text-center" th:text="#{service_form.header.text.create}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </header>
+
+    <header class="row mt-3 mb-3" th:unless="${service.id == null}">
+        <h1 class="col-12 text-center" th:text="#{service_form.header.heading.update}">List of Services</h1>
+        <p class="col-12 text-center" th:text="#{service_form.header.text.update}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <form class="container shadow-sm border p-4" action="#" th:action="@{${formAction}}" th:object="${service}" method="POST">
+        <!-- SECTION SERVICE DETAILS -->
+        <h3 class="mt-4" th:text="#{service_form.form.section_service_information}">Service information</h3>
+        <!-- NAME -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('name', 'service_form.form.item_name', 'text')"></div>
+        <!-- DESCRIPTION -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('description', 'service_form.form.item_description', 'text')"></div>
+
+        <div class="mb-3">
+            <label class="form-label" for="input-environment" th:text="#{service_form.form.item_environment}">Select input</label>
+            <select id="input-environment" name="input-environment" class="form-select" aria-label="Default select example" required th:field="*{environment}">
+                <option value="testing"  th:each="env: ${T(cz.muni.ics.serviceslist.data.enums.RelyingServiceEnvironment).values()}"
+                        th:value="${env.getValue()}" th:text="#{${'service_form.form.item_environment.value.' + env.getValue().toLowerCase()}}">Test</option>
+            </select>
+        </div>
+        <!-- RP IDENTIFIER -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('rpIdentifier', 'service_form.form.item_rp_identifier', 'text')"></div>
+        <!-- LOGIN URL -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('loginUrl', 'service_form.form.item_login_url', 'url')"></div>
+        <!-- SERVICE WEBSITE -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('websiteUrl', 'service_form.form.item_website', 'url')"></div>
+        <!-- JURISDICTION -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('jurisdiction', 'service_form.form.item_jurisdiction', 'text')"></div>
+
+        <!-- SECTION POLICIES -->
+        <h3 class="mt-4" th:text="#{service_form.form.section_policies}">Policies</h3>
+        <!-- PRIVACY POLICY -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('privacyPolicy', 'service_form.form.item_privacy_policy', 'url')"></div>
+        <!-- AUP/TOS -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('aupTos', 'service_form.form.item_aup_tos', 'url')"></div>
+        <!-- INCIDENT RESPONSE POLICY -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('incidentResponsePolicy', 'service_form.form.item_incident_response_policy', 'url')"></div>
+
+        <!-- SECTION ORGANIZATION -->
+        <h3 class="mt-4" th:text="#{service_form.form.providing_organization}">Providing organization</h3>
+        <!-- ORGANIZATION -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('providingOrganization', 'service_form.form.item_providing_organization', 'text')"></div>
+        <!-- ORGANIZATION WEBSITE -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('providingOrganizationWebsite', 'service_form.form.item_providing_organization_website', 'url')"></div>
+
+        <!-- SECTION CONTACTS -->
+        <h3 class="mt-4" th:text="#{service_form.form.section_contacts}">Contacts</h3>
+        <!-- ADMINISTRATIVE CONTACT -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('administrativeContact', 'service_form.form.item_administrative_contact', 'email')"></div>
+        <!-- SECURITY CONTACT -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('securityContact', 'service_form.form.item_security_contact', 'email')"></div>
+        <!-- TECHNICAL CONTACT -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('technicalContact', 'service_form.form.item_technical_contact', 'email')"></div>
+        <!-- HELPDESK CONTACT -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('helpdeskContact', 'service_form.form.item_helpdesk_contact', 'email')"></div>
+        <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-lg btn-primary" th:text="#{service_form.form.submit_btn}">Submit</button>
+        </div>
+    </form>
+</div>
+<!-- FOOTER -->
+<footer th:replace="fragments/general.html :: footer"></footer>
+<th:block th:replace="fragments/general.html :: scripts"></th:block>
+</body>
+</html>
