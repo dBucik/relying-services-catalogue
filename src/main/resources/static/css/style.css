@@ -1,0 +1,9 @@
+.navbar-logo {
+    max-height: 50px;
+    height: 100%;
+    width: auto;
+}
+
+.clickable-row:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,19 @@
+---
+
+app:
+  langs: ['en', 'cs']
+
+mongo:
+  username: 'test'
+  password: 'test'
+  database: 'test'
+  uri: 'mongodb://localhost'
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    cz.muni.ics: DEBUG
+    org.springframework: INFO

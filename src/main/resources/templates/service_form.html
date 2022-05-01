@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Services list</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet"
+          type="text/css" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a href="#" class="navbar-brand">
+            <img src="../static/img/logo.png" th:src="@{/img/logo.png}" class="navbar-logo" alt="Logo"/>
+            <span class="m-3">List of Services</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/admin}">Admin</a>
+                </li>
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                        Language-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
+<!--                        <li><a class="dropdown-item" href="#">English</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Čeština</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Slovenčina</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <!-- HEADER -->
+    <header class="row mt-3 mb-3">
+        <h1 class="col-12 text-center">List of Services</h1>
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <form class="container" action="#" th:action="@{/admin/create}" th:object="${service}" method="POST">
+        <!-- NAME -->
+        <div class="mb-3">
+            <h5><label for="name" class="form-label">Service name</label></h5>
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name['en']}">
+        </div>
+        <!-- DESCRIPTION -->
+        <div class="mb-3">
+            <h5><label for="description" class="form-label">Website</label></h5>
+            <input type="text" class="form-control" id="description" name="description" th:field="*{description['en']}">
+        </div>
+        <!-- LOGIN URL -->
+        <div class="mb-3">
+            <h5><label for="login-url" class="form-label">Service Login URL</label></h5>
+            <input type="url" class="form-control" id="login-url" name="login-url" th:field="*{loginUrl}">
+        </div>
+        <!-- SERVICE WEBSITE -->
+        <div class="mb-3">
+            <h5><label for="service-website" class="form-label">Website</label></h5>
+            <input type="url" class="form-control" id="service-website" name="service-website" th:field="*{websiteUrl}">
+        </div>
+        <!-- PRIVACY POLICY -->
+        <div class="mb-3">
+            <h5><label for="privacy-policy" class="form-label">Privacy Policy</label></h5>
+            <input type="url" class="form-control" id="privacy-policy" name="privacy-policy" th:field="*{privacyPolicy['en']}">
+        </div>
+        <!-- AUP/TOS -->
+        <div class="mb-3">
+            <h5><label for="aup-tos" class="form-label">Acceptable Use Policy / Terms of Service</label></h5>
+            <input type="url" class="form-control" id="aup-tos" name="aup-tos" th:field="*{aupTos['en']}">
+        </div>
+        <!-- INCIDENT RESPONSE POLICY -->
+        <div class="mb-3">
+            <h5><label for="incident-response-policy" class="form-label">Incident Response Policy</label></h5>
+            <input type="url" class="form-control" id="incident-response-policy" name="incident-response-policy" th:field="*{incidentResponsePolicy['en']}">
+        </div>
+        <!-- ORGANIZATION -->
+        <div class="mb-3">
+            <h5><label for="organization" class="form-label">Providing organization</label></h5>
+            <input type="text" class="form-control" id="organization" name="organization" th:field="*{providingOrganization['en']}">
+        </div>
+        <!-- ORGANIZATION WEBSITE -->
+        <div class="mb-3">
+            <h5><label for="organization-website" class="form-label">Providing organization website</label></h5>
+            <input type="url" class="form-control" id="organization-website" name="organization-website" th:field="*{providingOrganizationWebsite['en']}">
+        </div>
+        <!-- JURISDICITION -->
+        <div class="mb-3">
+            <h5><label for="jurisdiction" class="form-label">Jurisdiction</label></h5>
+            <input type="text" class="form-control" id="jurisdiction" name="jurisdiction" th:field="*{jurisdiction}">
+        </div>
+        <!-- ADMINISTRATIVE CONTACT -->
+        <div class="mb-3">
+            <h5><label for="administrative-contact" class="form-label">Administrative contact</label></h5>
+            <input type="email" class="form-control" id="administrative-contact" name="administrative-contact" th:field="*{administrativeContact}">
+        </div>
+        <!-- SECURITY CONTACT -->
+        <div class="mb-3">
+            <h5><label for="security-contact" class="form-label">Security contact</label></h5>
+            <input type="email" class="form-control" id="security-contact" name="security-contact" th:field="*{securityContact}">
+        </div>
+        <!-- TECHNICAL CONTACT -->
+        <div class="mb-3">
+            <h5><label for="technical-contact" class="form-label">Technical contact</label></h5>
+            <input type="email" class="form-control" id="technical-contact" name="technical-contact" th:field="*{technicalContact}">
+        </div>
+        <!-- HELPDESK CONTACT -->
+        <div class="mb-3">
+            <h5><label for="helpdesk-contact" class="form-label">Helpdesk contact</label></h5>
+            <input type="email" class="form-control" id="helpdesk-contact" name="helpdesk-contact" th:field="*{helpdeskContact}">
+        </div>
+        <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+        </div>
+
+
+
+
+
+<!--        <div class="mb-3">-->
+<!--            <h5 class="form-label">Service name</h5>-->
+<!--            <div class="form-floating mb-1">-->
+<!--                <input type="text" class="form-control" id="nameInput1" placeholder="">-->
+<!--                <label for="nameInput1">English</label>-->
+<!--            </div>-->
+<!--            <div class="form-floating mb-1">-->
+<!--                <input type="text" class="form-control" id="nameInput2" placeholder="">-->
+<!--                <label for="nameInput2">Czech</label>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="mb-3">-->
+<!--            <h5><label for="login-url" class="form-label">Service Login URL</label></h5>-->
+<!--            <input type="url" class="form-control" id="login-url">-->
+<!--        </div>-->
+    </form>
+</div>
+<!-- FOOTER -->
+<footer class="text-light bg-dark mt-5">
+    <div class="container">
+        <div class="aclr">
+            <div class="col">
+                <div>
+                    <p id="eu" class="small">This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 654248.</p>
+                </div>
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/imprint.html">Imprint</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/privacy-policy.html">Privacy policy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ls-login.html">LS Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+<!-- SCRIPTS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+        th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
+        th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="../static/js/script.js" th:src="@{/js/script.js}"></script>
+</html>
