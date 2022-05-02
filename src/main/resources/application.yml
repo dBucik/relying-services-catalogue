@@ -1,7 +1,16 @@
 ---
+spring:
+  main:
+    allow-bean-definition-overriding: true
 
 app:
-  langs: ['en', 'cs']
+  # Enabled locales locale - use two character code
+  enabled_locales: ['en', 'cs']
+  # Default locale - use two character code
+  default_locale: "en"
+  # Files in the directory must be named in a standard Java resource bundle manner. The filename must be "messages".
+  # Example files - (EN) messages_en.properties, (CS) messages_cs.properties, (default) messages.properties
+  localization_files_directory: /etc/rp-services-catalogue/
 
 mongo:
   username: 'test'
@@ -9,11 +18,8 @@ mongo:
   database: 'test'
   uri: 'mongodb://localhost'
 
-spring:
-  main:
-    allow-bean-definition-overriding: true
-
 logging:
   level:
     cz.muni.ics: DEBUG
     org.springframework: INFO
+

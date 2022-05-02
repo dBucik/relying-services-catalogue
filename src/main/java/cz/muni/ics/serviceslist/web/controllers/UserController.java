@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,6 +47,8 @@ public class UserController {
     public static final String ATTR_ACTION_VALUE_DELETE = "delete";
     public static final String MODEL_ATTR_SERVICES = "services";
     public static final String MODEL_ATTR_SERVICE = "service";
+
+    public static final String MODEL_ATTR_LOCALES = "locales";
 
     public static final String DELETE_RESPONSE_YES = "yes";
     public static final String DELETE_RESPONSE_NO = "no";
@@ -84,15 +87,15 @@ public class UserController {
 
     @GetMapping(GuiConstants.PATH_ADMIN_CREATE)
     public String createForm(Model model) {
-        RelyingServiceDetail service = RelyingServiceDetail.initializeEmpty(applicationProperties.getLangs());
+        RelyingServiceDetail service = RelyingServiceDetail.initializeEmpty(applicationProperties.getEnabledLocales());
         model.addAttribute(MODEL_ATTR_SERVICE, service);
         return VIEW_SERVICE_FORM;
     }
 
     @PostMapping(GuiConstants.PATH_ADMIN_CREATE)
     public String createFormSubmit(@ModelAttribute(MODEL_ATTR_SERVICE) RelyingServiceDetail relyingService,
-                                         BindingResult bindingResult,
-                                         RedirectAttributes redirectAttributes)
+                                   BindingResult bindingResult,
+                                   RedirectAttributes redirectAttributes)
             throws BadRequestParameterException
     {
         if (relyingService == null) {
@@ -107,6 +110,7 @@ public class UserController {
         redirectAttributes.addFlashAttribute(ATTR_SUCCESS, success);
         redirectAttributes.addFlashAttribute(ATTR_ACTION, ATTR_ACTION_VALUE_CREATE);
         if (success) {
+            redirectAttributes.addAttribute("id", id);
             return buildRedirect(new String[] {PATH_ADMIN, "{id}"});
         } else {
             return VIEW_SERVICE_FORM;
@@ -150,6 +154,7 @@ public class UserController {
         redirectAttributes.addFlashAttribute(ATTR_ACTION, ATTR_ACTION_VALUE_UPDATE);
         if (success) {
             // redirect to the detail
+            redirectAttributes.addAttribute("id", id);
             return buildRedirect(new String[] {PATH_ADMIN, "{id}"});
         } else {
             // redirect back to the form
@@ -171,19 +176,14 @@ public class UserController {
     }
 
     @PostMapping(GuiConstants.PATH_ADMIN_REMOVE + "/{id}")
-    public String removeFormSubmitPositive(@PathVariable("id") Long id,
-                                           @RequestParam("confirmation") String decision,
-                                           BindingResult bindingResult,
-                                           RedirectAttributes redirectAttributes)
+    public String removeFormSubmit(@PathVariable("id") Long id,
+                                   @RequestParam("confirmation") String decision,
+                                   RedirectAttributes redirectAttributes)
             throws BadRequestParameterException
     {
         if (id == null) {
             log.warn("No ID for service removal confirmation specified, redirecting to BAD_REQUEST");
             throw new BadRequestParameterException("No ID specified");
-        }
-
-        if (bindingResult.hasErrors()) {
-            return VIEW_DELETE_CONFIRM;
         }
 
         if (DELETE_RESPONSE_YES.equalsIgnoreCase(decision)) {
@@ -199,6 +199,7 @@ public class UserController {
             }
         } else if (DELETE_RESPONSE_NO.equalsIgnoreCase(decision)) {
             // redirect back to service detail
+            redirectAttributes.addAttribute("id", id);
             return buildRedirect(new String[] {PATH_ADMIN, "{id}"});
         } else {
             log.warn("Decision parameter in service removal confirmation not recognized ({}), redirecting to BAD_REQUEST", decision);
@@ -206,18 +207,23 @@ public class UserController {
         }
     }
 
+    @ModelAttribute
+    public void langs(Model model) {
+        model.addAttribute(MODEL_ATTR_LOCALES, applicationProperties.getEnabledLocales());
+    }
+
     @ExceptionHandler({RelyingServiceNotFoundException.class})
-    public String notFound() {
+    public String notFoundHandler() {
         return VIEW_NOT_FOUND;
     }
 
     @ExceptionHandler({BadRequestParameterException.class})
-    public String badRequest() {
+    public String badRequestHandler() {
         return VIEW_BAD_REQUEST;
     }
 
     @ExceptionHandler({UnauthorizedException.class})
-    public String unauthorized() {
+    public String unauthorizedHandler() {
         return VIEW_UNAUTHORIZED;
     }
 
@@ -230,6 +236,23 @@ public class UserController {
             joiner.add(p);
         }
         return "redirect:/" + joiner;
+    }
+
+    // DEV ONLY
+
+    @RequestMapping(GuiConstants.PATH_UNAUTHORIZED)
+    public String unauthorized() {
+        return VIEW_UNAUTHORIZED;
+    }
+
+    @RequestMapping(GuiConstants.PATH_BAD_REQUEST)
+    public String badRequest() {
+        return VIEW_BAD_REQUEST;
+    }
+
+    @RequestMapping(GuiConstants.PATH_NOT_FOUND)
+    public String notFound() {
+        return VIEW_NOT_FOUND;
     }
 
 }
