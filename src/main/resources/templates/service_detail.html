@@ -1,5 +1,7 @@
-<!doctype html>
-<html lang="en" th:lang="${#locale}">
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,12 +27,12 @@
         <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/}" th:text="#{nav.link.home}">Home</a>
+                    <a class="nav-link" th:classappend="${site == 'home'} ? 'active'" aria-current="page" href="#" th:href="@{/}" th:text="#{nav.link.home}">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/admin}" th:text="#{nav.link.admin}">Admin</a>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link" href="#" th:classappend="${site == 'create'} ? 'active'" th:href="@{/admin/create}" th:text="#{nav.link.create_entry}">Create entry</a>
                 </li>
-                <li class="nav-item dropdown" th:if="${#lists.size(locales) > 1}">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.link.language}">
                         Language
                     </a>
@@ -42,6 +44,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline btn-outline-secondary" href="#" th:href="@{/login_init}" th:text="#{nav.link.admin}">Admin login</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form action="#" th:action="@{/logout}" method="POST">
+                        <button class="btn btn-outline btn-outline-secondary" type="submit" th:text="#{nav.link.logout}">Logout</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>
@@ -49,11 +59,11 @@
 <div class="container" th:object="${service}">
     <!-- HEADER -->
     <header class="row mt-3 mb-3">
-        <div class="col-12 col-sm-10" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
+        <div class="col-12" th:classappend="${#authorization.expr('hasRole(''ROLE_ADMIN'')')} ? 'col-sm-10'" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
             <h2 th:text="#{service_detail.header.heading(${service.id}, ${name ?: notdefined})}">Service #1: Test service</h2>
             <p th:text="${service.description?.getOrDefault(#locale.language, null)} ?: ${service.description?.getOrDefault(defaultLocale, notdefined)}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
-        <div class="col-12 col-sm-2">
+        <div class="col-12 col-sm-2" sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="d-grid gap-2">
                 <a href="#" class="btn btn-primary" th:href="@{/admin/update/{id}(id=${service.id})}" th:text="#{service_detail.header.button_modify}">Modify</a>
                 <a href="#" class="btn btn-danger" th:href="@{/admin/remove/{id}(id=${service.id})}" th:text="#{service_detail.header.button_remove}">Remove</a>

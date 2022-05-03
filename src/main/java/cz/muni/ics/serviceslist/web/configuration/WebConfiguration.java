@@ -1,4 +1,4 @@
-package cz.muni.ics.serviceslist.web;
+package cz.muni.ics.serviceslist.web.configuration;
 
 import cz.muni.ics.serviceslist.ApplicationProperties;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -24,7 +25,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @Configuration
 @EnableWebMvc
 @Slf4j
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfiguration implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/META-INF/resources/",
@@ -32,14 +33,12 @@ public class WebConfig implements WebMvcConfigurer {
             "classpath:/static/",
             "classpath:/public/"
     };
-
     private static final String MESSAGES_FILE = "messages";
     public static final String PARAM_LOCALE = "locale";
-
     private final ApplicationProperties applicationProperties;
 
     @Autowired
-    public WebConfig(ApplicationProperties applicationProperties) {
+    public WebConfiguration(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 
@@ -54,6 +53,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseTrailingSlashMatch(true);
     }
 
     @Bean

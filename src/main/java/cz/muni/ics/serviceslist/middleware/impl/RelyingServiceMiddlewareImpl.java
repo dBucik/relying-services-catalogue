@@ -1,17 +1,16 @@
 package cz.muni.ics.serviceslist.middleware.impl;
 
+import cz.muni.ics.serviceslist.common.exceptions.RelyingServiceNotFoundException;
 import cz.muni.ics.serviceslist.data.RelyingServicesRepository;
 import cz.muni.ics.serviceslist.data.model.RelyingServiceDTO;
 import cz.muni.ics.serviceslist.middleware.RelyingServiceMiddleware;
-import cz.muni.ics.serviceslist.common.exceptions.RelyingServiceNotFoundException;
 import cz.muni.ics.serviceslist.web.model.RelyingService;
 import cz.muni.ics.serviceslist.web.model.RelyingServiceDetail;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {

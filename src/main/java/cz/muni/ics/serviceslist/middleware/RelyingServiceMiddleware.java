@@ -3,7 +3,6 @@ package cz.muni.ics.serviceslist.middleware;
 import cz.muni.ics.serviceslist.common.exceptions.RelyingServiceNotFoundException;
 import cz.muni.ics.serviceslist.web.model.RelyingService;
 import cz.muni.ics.serviceslist.web.model.RelyingServiceDetail;
-
 import java.util.List;
 
 public interface RelyingServiceMiddleware {

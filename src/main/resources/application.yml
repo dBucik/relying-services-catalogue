@@ -3,6 +3,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+server:
+  error:
+    path: '/error'
+
 app:
   # Enabled locales locale - use two character code
   enabled_locales: ['en', 'cs']
@@ -12,6 +16,18 @@ app:
   # Files in the directory must be named in a standard Java resource bundle manner. The filename must be "messages".
   # Example files - (EN) messages_en.properties, (CS) messages_cs.properties, (default) messages.properties
   localization_files_directory: /etc/rp-services-catalogue/
+  admin_entitlements: ['urn:geant:cesnet.cz:res:testCap1#perun.cesnet.cz']
+  admin_subs: []
+  support_email: "support@example.org"
+
+oidc:
+  issuer: 'https://login.cesnet.cz/oidc/'
+  registrationId: 'cesnet'
+  client-id: '6d6d5d16-6d42-4d14-8da8-393b7268c780'
+  client-secret: 'AJLezo2Z5rj9SNG_KlAkb_yM7sby3FUozYEkRTPtKLeBD0yfpz33afYLfDWH3JJPRqB7boAPJa9ML5H9TCWhyhU'
+  scopes: ['openid', 'profile', 'eduperson_entitlement']
+  redirect_uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+  username_attribute: 'sub'
 
 mongo:
   username: 'test'

@@ -1,16 +1,15 @@
-package cz.muni.ics.serviceslist.data;
-
-import cz.muni.ics.serviceslist.data.model.DatabaseSequence;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Component;
-
-import java.util.Objects;
+package cz.muni.ics.serviceslist.data.helper;
 
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+
+import cz.muni.ics.serviceslist.data.model.DatabaseSequenceDTO;
+import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SequenceGenerator {
@@ -22,9 +21,9 @@ public class SequenceGenerator {
     }
 
     public long generateSequence(String seqName) {
-        DatabaseSequence counter = mongoOperations.findAndModify(query(where("_id").is(seqName)),
+        DatabaseSequenceDTO counter = mongoOperations.findAndModify(query(where("_id").is(seqName)),
                 new Update().inc("seq",1), options().returnNew(true).upsert(true),
-                DatabaseSequence.class);
+                DatabaseSequenceDTO.class);
         return !Objects.isNull(counter) ? counter.getSeq() : 1;
     }
 

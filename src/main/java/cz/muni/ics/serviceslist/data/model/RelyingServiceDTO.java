@@ -1,5 +1,6 @@
 package cz.muni.ics.serviceslist.data.model;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,8 +10,6 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Map;
 
 @Getter
 @Setter

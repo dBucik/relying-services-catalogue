@@ -2,8 +2,9 @@ package cz.muni.ics.serviceslist;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -27,10 +28,12 @@ import org.springframework.util.StringUtils;
 public class ApplicationProperties {
 
     private List<String> enabledLocales = new ArrayList<>();
-
     private String localizationFilesDirectory = "";
-
     private String defaultLocale = "en";
+    private Set<String> adminEntitlements = new HashSet<>();
+    private Set<String> adminSubs = new HashSet<>();
+
+    private String supportEmail;
 
     @PostConstruct
     public void init() {
@@ -39,11 +42,6 @@ public class ApplicationProperties {
             defaultLocale = "en";
         } else {
             defaultLocale = defaultLocale.toLowerCase();
-            try {
-                new Locale(defaultLocale);
-            } catch (Exception e) {
-                //TODO: handle
-            }
         }
 
         if (enabledLocales == null || enabledLocales.isEmpty()) {
@@ -56,6 +54,9 @@ public class ApplicationProperties {
             .map(String::toLowerCase)
             .distinct()
             .collect(Collectors.toList());
+
+        log.info("Bootstrap: Users with any of entitlements '{}' will be considered as admins", adminEntitlements);
+        log.info("Bootstrap: Any users with sub from the set '{}' will be considered as admin", adminSubs);
 
         log.info("Initialized {}", this.getClass().getSimpleName());
         log.debug("{}", this);

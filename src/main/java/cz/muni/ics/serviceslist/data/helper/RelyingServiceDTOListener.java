@@ -1,6 +1,5 @@
-package cz.muni.ics.serviceslist;
+package cz.muni.ics.serviceslist.data.helper;
 
-import cz.muni.ics.serviceslist.data.SequenceGenerator;
 import cz.muni.ics.serviceslist.data.model.RelyingServiceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
