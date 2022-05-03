@@ -1,8 +1,11 @@
 package cz.muni.ics.serviceslist;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +14,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.Set;
 import org.springframework.util.StringUtils;
 
 @Getter
@@ -27,7 +26,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class ApplicationProperties {
 
-    private Set<String> enabledLocales = new HashSet<>();
+    private List<String> enabledLocales = new ArrayList<>();
 
     private String localizationFilesDirectory = "";
 
@@ -48,12 +47,15 @@ public class ApplicationProperties {
         }
 
         if (enabledLocales == null || enabledLocales.isEmpty()) {
-            enabledLocales = Collections.singleton(defaultLocale);
+            enabledLocales = Collections.singletonList(defaultLocale);
             log.debug("No locales enabled have been configured. Using default locale {}",
                 defaultLocale);
         }
         enabledLocales.add(defaultLocale);
-        enabledLocales = enabledLocales.stream().map(String::toLowerCase).collect(Collectors.toSet());
+        enabledLocales = enabledLocales.stream()
+            .map(String::toLowerCase)
+            .distinct()
+            .collect(Collectors.toList());
 
         log.info("Initialized {}", this.getClass().getSimpleName());
         log.debug("{}", this);

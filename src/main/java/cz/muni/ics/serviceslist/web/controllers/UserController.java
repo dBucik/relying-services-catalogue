@@ -49,6 +49,7 @@ public class UserController {
     public static final String MODEL_ATTR_SERVICE = "service";
 
     public static final String MODEL_ATTR_LOCALES = "locales";
+    public static final String MODEL_ATTR_DEFAULT_LOCALE = "defaultLocale";
 
     public static final String DELETE_RESPONSE_YES = "yes";
     public static final String DELETE_RESPONSE_NO = "no";
@@ -208,8 +209,13 @@ public class UserController {
     }
 
     @ModelAttribute
-    public void langs(Model model) {
+    public void locales(Model model) {
         model.addAttribute(MODEL_ATTR_LOCALES, applicationProperties.getEnabledLocales());
+    }
+
+    @ModelAttribute
+    public void defaultLocale(Model model) {
+        model.addAttribute(MODEL_ATTR_DEFAULT_LOCALE, applicationProperties.getDefaultLocale());
     }
 
     @ExceptionHandler({RelyingServiceNotFoundException.class})

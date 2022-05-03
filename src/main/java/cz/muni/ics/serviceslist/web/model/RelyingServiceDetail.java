@@ -1,15 +1,14 @@
 package cz.muni.ics.serviceslist.web.model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -34,7 +33,7 @@ public class RelyingServiceDetail extends RelyingService {
     private String technicalContact;
     private String helpdeskContact;
 
-    public static RelyingServiceDetail initializeEmpty(Set<String> languages) {
+    public static RelyingServiceDetail initializeEmpty(List<String> languages) {
         RelyingServiceDetail rs = new RelyingServiceDetail();
         initializeLocalizedField(rs.getName(), languages);
         initializeLocalizedField(rs.getDescription(), languages);
@@ -46,7 +45,7 @@ public class RelyingServiceDetail extends RelyingService {
         return rs;
     }
 
-    private static void initializeLocalizedField(Map<String, String> field, Set<String> languageKeys) {
+    private static void initializeLocalizedField(Map<String, String> field, List<String> languageKeys) {
         for (String langKey: languageKeys) {
             field.put(langKey, "");
         }

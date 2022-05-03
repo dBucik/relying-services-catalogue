@@ -14,7 +14,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a href="#" class="navbar-brand">
+        <a href="#" class="navbar-brand" th:href="@{/}"> <!-- TODO: admin link -->
             <img src="../static/img/logo.png" th:src="@{/img/logo.png}" class="navbar-logo" alt="Logo"/>
             <span class="m-3" th:text="#{nav.title}">List of Services</span>
         </a>
@@ -31,8 +31,8 @@
                     <a class="nav-link" href="#" th:href="@{/admin}" th:text="#{nav.link.admin}">Admin</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-language"></i>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.link.language}">
+                        Language
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
                         th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
@@ -49,9 +49,9 @@
 <div class="container" th:object="${service}">
     <!-- HEADER -->
     <header class="row mt-3 mb-3">
-        <div class="col-12">
-            <h2><span th:text="#{service_delete_confirm.header.service}">Service</span> #<span th:text="*{id}">1</span> - <span th:text="*{name['en']}">Service name placeholder</span></h2>
-            <p><span th:text="#{service_delete_confirm.header.description}">Description:</span> <span th:text="*{description['en']}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></p>
+        <div class="col-12" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
+            <h2 th:text="#{service_delete_confirm.header.heading(${service.id}, ${name ?: notdefined})}">Service #1: Test service</h2>
+            <p th:text="${service.description?.getOrDefault(#locale.language, null)} ?: ${service.description?.getOrDefault(defaultLocale, notdefined)}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
         <div class="col-12">
             <hr/>
@@ -64,11 +64,11 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <form action="#" method="POST" class="col-12 col-sm-6 col-md-3 offset-md-3 d-grid mb-2" th:action="@{/admin/remove/{id}(id=*{id})}">
+                <form action="#" method="POST" class="col-12 col-sm-6 col-md-3 offset-md-3 d-grid mb-2" th:action="@{/admin/remove/{id}(id=${service.id})}">
                     <input type="hidden" name="confirmation" value="yes">
                     <input type="submit" class="btn btn-success" name="submit" th:value="#{service_delete.confirm.form.button_yes}">
                 </form>
-                <form action="#" method="POST"  class="col-12 col-sm-6 col-md-3 d-grid mb-2" th:action="@{/admin/remove/{id}(id=*{id})}">
+                <form action="#" method="POST"  class="col-12 col-sm-6 col-md-3 d-grid mb-2" th:action="@{/admin/remove/{id}(id=${service.id})}">
                     <input type="hidden" name="confirmation" value="no">
                     <input type="submit" class="btn btn-danger" name="submit" th:value="#{service_delete.confirm.form.button_no}">
                 </form>

@@ -14,7 +14,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a href="#" class="navbar-brand">
+        <a href="#" class="navbar-brand" th:href="@{/}"> <!-- TODO: admin link -->
             <img src="../static/img/logo.png" th:src="@{/img/logo.png}" class="navbar-logo" alt="Logo"/>
             <span class="m-3" th:text="#{nav.title}">List of Services</span>
         </a>
@@ -31,8 +31,8 @@
                     <a class="nav-link" href="#" th:href="@{/admin}" th:text="#{nav.link.admin}">Admin</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-language"></i>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.link.language}">
+                        Language
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
                         th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">

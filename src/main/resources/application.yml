@@ -6,6 +6,7 @@ spring:
 app:
   # Enabled locales locale - use two character code
   enabled_locales: ['en', 'cs']
+  #enabled_locales: ['en']
   # Default locale - use two character code
   default_locale: "en"
   # Files in the directory must be named in a standard Java resource bundle manner. The filename must be "messages".
@@ -22,4 +23,3 @@ logging:
   level:
     cz.muni.ics: DEBUG
     org.springframework: INFO
-
