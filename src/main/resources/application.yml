@@ -18,13 +18,13 @@ app:
   localization_files_directory: /etc/rp-services-catalogue/
   admin_entitlements: ['urn:geant:cesnet.cz:res:testCap1#perun.cesnet.cz']
   admin_subs: []
-  support_email: "support@example.org"
+  support_email: "test@example.org"
 
 oidc:
   issuer: 'https://login.cesnet.cz/oidc/'
   registrationId: 'cesnet'
   client-id: '6d6d5d16-6d42-4d14-8da8-393b7268c780'
-  client-secret: 'AJLezo2Z5rj9SNG_KlAkb_yM7sby3FUozYEkRTPtKLeBD0yfpz33afYLfDWH3JJPRqB7boAPJa9ML5H9TCWhyhU'
+  client-secret: ''
   scopes: ['openid', 'profile', 'eduperson_entitlement']
   redirect_uri: '{baseUrl}/login/oauth2/code/{registrationId}'
   username_attribute: 'sub'

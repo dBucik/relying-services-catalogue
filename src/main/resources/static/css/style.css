@@ -1,3 +1,7 @@
+body {
+    min-height: 100vh;
+}
+
 .navbar-logo {
     max-height: 50px;
     height: 100%;

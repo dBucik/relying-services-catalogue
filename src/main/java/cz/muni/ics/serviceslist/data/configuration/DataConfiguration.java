@@ -30,7 +30,7 @@ public class DataConfiguration {
                 mongoProperties.getDatabase(),
                 mongoProperties.getPassword().toCharArray()
         );
-        ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/test");
+        ConnectionString connectionString = new ConnectionString(mongoProperties.getUri());
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .applicationName("Services List")

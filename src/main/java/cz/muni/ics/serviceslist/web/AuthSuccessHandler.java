@@ -22,6 +22,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         if (authentication != null && authentication.getAuthorities() != null &&
             authentication.getAuthorities().contains(ROLE_ADMIN))
         {
+            log.debug("Administrator '{}' has logged in", authentication.getName());
             super.onAuthenticationSuccess(request, response, authentication);
         } else {
             log.debug("Authenticated user is not an admin, redirecting to unauthorized");

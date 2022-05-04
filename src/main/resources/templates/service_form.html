@@ -2,62 +2,20 @@
 <html lang="en" th:lang="${#locale.language}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<head th:replace="fragments/general.html :: head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:if="${service.id == null}" th:text="#{service_form.title.create}">Services list</title>
-    <title th:unless="${service.id == null}" th:text="#{service_form.title.update}">Services list</title>
+    <title th:text="#{services_list.title}">Services list</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet"
           type="text/css" th:href="@{/webjars/font-awesome/css/all.min.css}">
     <link href="../static/css/style.css" rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
-<body>
+<body class="d-flex flex-column">
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a href="#" class="navbar-brand" th:href="@{/}"> <!-- TODO: admin link -->
-            <img src="../static/img/logo.png" th:src="@{/img/logo.png}" class="navbar-logo" alt="Logo"/>
-            <span class="m-3" th:text="#{nav.title}">List of Services</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" th:classappend="${site == 'home'} ? 'active'" aria-current="page" href="#" th:href="@{/}" th:text="#{nav.link.home}">Home</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link" href="#" th:classappend="${site == 'create'} ? 'active'" th:href="@{/admin/create}" th:text="#{nav.link.create_entry}">Create entry</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.link.language}">
-                        Language
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
-                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-                        <li th:each="locale_key : ${locales}">
-                            <a class="dropdown-item" href="#" th:text="#{'nav.locale.' + ${locale_key}}"
-                               th:href="${urlBuilder.replaceQueryParam('locale', locale_key).toUriString()}">English</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="btn btn-outline btn-outline-secondary" href="#" th:href="@{/login_init}" th:text="#{nav.link.admin}">Admin login</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <form action="#" th:action="@{/logout}" method="POST">
-                        <button class="btn btn-outline btn-outline-secondary" type="submit" th:text="#{nav.link.logout}">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container" th:with="formAction=${service.id == null ? '/admin/create' : '/admin/update/' + service.id}">
+<nav th:replace="fragments/general.html :: navbar"></nav>
+<div class="container flex-grow-1" th:with="formAction=${service.id == null ? '/admin/create' : '/admin/update/' + service.id}">
     <!-- HEADER -->
     <header class="row mt-3 mb-3" th:if="${service.id == null}">
         <h1 class="col-12 text-center" th:text="#{service_form.header.heading.create}">List of Services</h1>
@@ -74,194 +32,50 @@
         <!-- SECTION SERVICE DETAILS -->
         <h3 class="mt-4" th:text="#{service_form.form.section_service_information}">Service information</h3>
         <!-- NAME -->
-        <div class="mb-3">
-            <div th:if="${#lists.size(locales) > 1}">
-                <p class="form-label" th:text="#{service_form.form.item_name}">Service name</p>
-                <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                    <input type="text" class="form-control small" id="nameInput1" th:id="${'input-service-name-' + locale_key}" placeholder="" th:field="${service.name[__${locale_key}__]}" th:value="${service.name[__${locale_key}__]}">
-                    <label for="nameInput1" class="text-muted" th:for="${'input-service-name-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                </div>
-            </div>
-            <div th:unless="${#lists.size(locales) > 1}">
-                <label for="name" class="form-label" th:text="#{service_form.form.item_name}">Service name</label>
-                <input type="text" class="form-control" id="name" name="name" th:field="${service.name[defaultLocale]}" th:value="${service.name[defaultLocale]}">
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('name', 'service_form.form.item_name', 'text')"></div>
         <!-- DESCRIPTION -->
-        <div class="mb-3">
-            <div th:if="${#lists.size(locales) > 1}">
-                <p class="form-label" th:text="#{service_form.form.item_description}">Description</p>
-                <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                    <input type="text" class="form-control" id="descriptionInput1" th:id="${'input-service-description-' + locale_key}" placeholder="" th:field="${service.description[__${locale_key}__]}" th:value="${service.description[__${locale_key}__]}">
-                    <label for="descriptionInput1" class="text-muted" th:for="${'input-service-description-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                </div>
-            </div>
-            <div th:unless="${#lists.size(locales) > 1}">
-                <label for="description" class="form-label" th:text="#{service_form.form.item_description}">Description</label>
-                <input type="text" class="form-control" id="description" name="description" th:field="${service.description[defaultLocale]}" th:value="${service.description[defaultLocale]}">
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('description', 'service_form.form.item_description', 'text')"></div>
         <!-- LOGIN URL -->
-        <div class="mb-3">
-            <label for="login-url" class="form-label" th:text="#{service_form.form.item_login_url}">Service Login URL</label>
-            <input type="url" class="form-control" id="login-url" name="login-url" th:field="${service.loginUrl}" th:value="${service.loginUrl}">
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('loginUrl', 'service_form.form.item_login_url', 'url')"></div>
         <!-- SERVICE WEBSITE -->
-        <div class="mb-3">
-            <label for="service-website" class="form-label" th:text="#{service_form.form.item_website}">Website</label>
-            <input type="url" class="form-control" id="service-website" name="service-website" th:field="${service.websiteUrl}" th:value="${service.websiteUrl}">
-        </div>
-        <!-- JURISDICITION -->
-        <div class="mb-3">
-            <label for="jurisdiction" class="form-label" th:text="#{service_form.form.item_jurisdiction}">Jurisdiction</label>
-            <input type="text" class="form-control" id="jurisdiction" name="jurisdiction" th:field="${service.jurisdiction}" th:value="${service.jurisdiction}">
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('websiteUrl', 'service_form.form.item_website', 'url')"></div>
+        <!-- JURISDICTION -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('jurisdiction', 'service_form.form.item_jurisdiction', 'text')"></div>
 
         <!-- SECTION POLICIES -->
         <h3 class="mt-4" th:text="#{service_form.form.section_policies}">Policies</h3>
         <!-- PRIVACY POLICY -->
-        <div class="mb-3">
-            <div class="mb-3">
-                <div th:if="${#lists.size(locales) > 1}">
-                    <p class="form-label" th:text="#{service_form.form.item_privacy_policy}">Privacy Policy</p>
-                    <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                        <input type="text" class="form-control" id="privacyPolicyInput1" th:id="${'input-service-privacy-policy-' + locale_key}" placeholder="" th:field="${service.privacyPolicy[__${locale_key}__]}" th:value="${service.privacyPolicy[__${locale_key}__]}">
-                        <label for="privacyPolicyInput1" class="text-muted" th:for="${'input-service-privacy-policy-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(locales) > 1}">
-                    <label for="privacy-policy" class="form-label" th:text="#{service_form.form.item_privacy_policy}">Privacy Policy</label>
-                    <input type="text" class="form-control" id="privacy-policy" name="privacy-policy" th:field="${service.privacyPolicy[defaultLocale]}" th:value="${service.privacyPolicy[defaultLocale]}">
-                </div>
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('privacyPolicy', 'service_form.form.item_privacy_policy', 'url')"></div>
         <!-- AUP/TOS -->
-        <div class="mb-3">
-            <div class="mb-3">
-                <div th:if="${#lists.size(locales) > 1}">
-                    <p class="form-label" th:text="#{service_form.form.item_aup_tos}">Acceptable Use Policy / Terms of Service</p>
-                    <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                        <input type="text" class="form-control" id="aupTosInput1" th:id="${'input-service-aup-tos-' + locale_key}" placeholder="" th:field="${service.aupTos[__${locale_key}__]}" th:value="${service.aupTos[__${locale_key}__]}">
-                        <label for="aupTosInput1" class="text-muted" th:for="${'input-service-aup-tos-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(locales) > 1}">
-                    <label for="aup-tos" class="form-label" th:text="#{service_form.form.item_aup_tos}">Acceptable Use Policy / Terms of Service</label>
-                    <input type="text" class="form-control" id="aup-tos" name="aup-tos" th:field="${service.aupTos[defaultLocale]}" th:value="${service.aupTos[defaultLocale]}">
-                </div>
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('aupTos', 'service_form.form.item_aup_tos', 'url')"></div>
         <!-- INCIDENT RESPONSE POLICY -->
-        <div class="mb-3">
-            <div class="mb-3">
-                <div th:if="${#lists.size(locales) > 1}">
-                    <p class="form-label" th:text="#{service_form.form.item_incident_response_policy}">Incident Response Policy</p>
-                    <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                        <input type="text" class="form-control" id="incidentResponsePolicyInput1" th:id="${'input-service-incident-response-policy-' + locale_key}" placeholder="" th:field="${service.incidentResponsePolicy[__${locale_key}__]}" th:value="${service.incidentResponsePolicy[__${locale_key}__]}">
-                        <label for="incidentResponsePolicyInput1" class="text-muted" th:for="${'input-service-incident-response-policy-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(locales) > 1}">
-                    <label for="incident-response-policy" class="form-label" th:text="#{service_form.form.item_incident_response_policy}">Incident Response Policy</label>
-                    <input type="text" class="form-control" id="incident-response-policy" name="incident-response-policy" th:field="${service.incidentResponsePolicy[defaultLocale]}" th:value="${service.incidentResponsePolicy[defaultLocale]}">
-                </div>
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('incidentResponsePolicy', 'service_form.form.item_incident_response_policy', 'url')"></div>
 
         <!-- SECTION ORGANIZATION -->
         <h3 class="mt-4" th:text="#{service_form.form.providing_organization}">Providing organization</h3>
         <!-- ORGANIZATION -->
-        <div class="mb-3">
-            <div class="mb-3">
-                <div th:if="${#lists.size(locales) > 1}">
-                    <p class="form-label" th:text="#{service_form.form.item_providing_organization}">Providing organization</p>
-                    <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                        <input type="text" class="form-control" id="providingOrganizationInput1" th:id="${'input-service-providing-organization-' + locale_key}" placeholder="" th:field="${service.providingOrganization[__${locale_key}__]}" th:value="${service.providingOrganization[__${locale_key}__]}">
-                        <label for="providingOrganizationInput1" class="text-muted" th:for="${'input-service-providing-organization-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(locales) > 1}">
-                    <label for="providing-organization" class="form-label" th:text="#{service_form.form.item_providing_organization}">Providing organization</label>
-                    <input type="text" class="form-control" id="providing-organization" name="providing-organization" th:field="${service.providingOrganization[defaultLocale]}" th:value="${service.providingOrganization[defaultLocale]}">
-                </div>
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('providingOrganization', 'service_form.form.item_providing_organization', 'text')"></div>
         <!-- ORGANIZATION WEBSITE -->
-        <div class="mb-3">
-            <div class="mb-3">
-                <div th:if="${#lists.size(locales) > 1}">
-                    <p class="form-label" th:text="#{service_form.form.item_providing_organization_website}">Website</p>
-                    <div class="form-floating mb-2" th:each="locale_key : ${locales}">
-                        <input type="text" class="form-control" id="providingOrganizationWebsiteInput1" th:id="${'input-service-providing-organization-website-' + locale_key}" placeholder="" th:field="${service.providingOrganizationWebsite[__${locale_key}__]}" th:value="${service.providingOrganizationWebsite[__${locale_key}__]}">
-                        <label for="providingOrganizationWebsiteInput1" class="text-muted" th:for="${'input-service-providing-organization-website-' + locale_key}" th:text="#{'service_form.form.locale_' + ${locale_key}}">English</label>
-                    </div>
-                </div>
-                <div th:unless="${#lists.size(locales) > 1}">
-                    <label for="providing-organization-website" class="form-label" th:text="#{service_form.form.item_providing_organization_website}">Website</label>
-                    <input type="text" class="form-control" id="providing-organization-website" name="providing-organization-website" th:field="${service.providingOrganizationWebsite[defaultLocale]}" th:value="${service.providingOrganizationWebsite[defaultLocale]}">
-                </div>
-            </div>
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('providingOrganizationWebsite', 'service_form.form.item_providing_organization_website', 'url')"></div>
 
         <!-- SECTION CONTACTS -->
         <h3 class="mt-4" th:text="#{service_form.form.section_contacts}">Contacts</h3>
         <!-- ADMINISTRATIVE CONTACT -->
-        <div class="mb-3">
-            <label for="administrative-contact" class="form-label" th:text="#{service_form.form.item_administrative_contact}">Administrative contact</label>
-            <input type="email" class="form-control" id="administrative-contact" name="administrative-contact" th:field="${service.administrativeContact}" th:value="${service.administrativeContact}">
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('administrativeContact', 'service_form.form.item_administrative_contact', 'email')"></div>
         <!-- SECURITY CONTACT -->
-        <div class="mb-3">
-            <label for="security-contact" class="form-label" th:text="#{service_form.form.item_security_contact}">Security contact</label>
-            <input type="email" class="form-control" id="security-contact" name="security-contact" th:field="${service.securityContact}" th:value="${service.securityContact}">
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('securityContact', 'service_form.form.item_security_contact', 'email')"></div>
         <!-- TECHNICAL CONTACT -->
-        <div class="mb-3">
-            <label for="technical-contact" class="form-label" th:text="#{service_form.form.item_technical_contact}">Technical contact</label>
-            <input type="email" class="form-control" id="technical-contact" name="technical-contact" th:field="${service.technicalContact}" th:value="${service.technicalContact}">
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('technicalContact', 'service_form.form.item_technical_contact', 'email')"></div>
         <!-- HELPDESK CONTACT -->
-        <div class="mb-3">
-            <label for="helpdesk-contact" class="form-label" th:text="#{service_form.form.item_helpdesk_contact}">Helpdesk contact</label>
-            <input type="email" class="form-control" id="helpdesk-contact" name="helpdesk-contact" th:field="${service.helpdeskContact}" th:value="${service.helpdeskContact}">
-        </div>
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('helpdeskContact', 'service_form.form.item_helpdesk_contact', 'email')"></div>
         <div class="d-grid mt-3">
             <button type="submit" class="btn btn-lg btn-primary" th:text="#{service_form.form.submit_btn}">Submit</button>
         </div>
     </form>
 </div>
 <!-- FOOTER -->
-<footer class="text-light bg-dark mt-5">
-    <div class="container">
-        <div class="aclr">
-            <div class="col">
-                <div>
-                    <p id="eu" class="small">This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 654248.</p>
-                </div>
-            </div>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact.html">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/imprint.html">Imprint</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/privacy-policy.html">Privacy policy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/ls-login.html">LS Login</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</footer>
+<footer th:replace="fragments/general.html :: footer"></footer>
+<script th:replace="fragments/general.html :: scripts"></script>
+<script type="text/javascript" src="../static/js/services_list.js" th:src="@{/js/services_list.js}"></script>
 </body>
-<!-- SCRIPTS -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
-        th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
-        th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<script type="text/javascript" src="../static/js/script.js" th:src="@{/js/script.js}"></script>
 </html>

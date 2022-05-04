@@ -5,10 +5,10 @@ public interface GuiConstants {
     // == PATHS ==
     String PATH_HOME = "/";
     String PATH_LOGIN = "/login_init";
-    String PATH_ADMIN = "/admin/";
-    String PATH_ADMIN_CREATE = PATH_ADMIN + "create";
-    String PATH_ADMIN_UPDATE = PATH_ADMIN + "update";
-    String PATH_ADMIN_REMOVE = PATH_ADMIN + "remove";
+    String PATH_ADMIN = "/admin";
+    String PATH_ADMIN_CREATE = PATH_ADMIN + "/create";
+    String PATH_ADMIN_UPDATE = PATH_ADMIN + "/update";
+    String PATH_ADMIN_REMOVE = PATH_ADMIN + "/remove";
 
     // == ERROR PATHS ==
 
