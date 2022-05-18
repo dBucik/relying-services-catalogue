@@ -30,6 +30,7 @@ public class ApplicationProperties {
     private List<String> enabledLocales = new ArrayList<>();
     private String localizationFilesDirectory = "";
     private String templateFilesDirectory = "";
+    private String staticResourcesDirectory = "";
     private String defaultLocale = "en";
     private Set<String> adminEntitlements = new HashSet<>();
     private Set<String> adminSubs = new HashSet<>();

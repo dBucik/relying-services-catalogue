@@ -19,6 +19,10 @@ app:
   # Files in the directory must be named according to the templates defined in the resources/templates folder.
   # These templates will be looked at first, and if they are not found, system will use bundled templates instead.
   template_files_directory: /etc/rp-services-catalogue/templates/
+  # Files in the directory must be reflect the requested resource paths. All paths in your templates and fragments
+  # should use the local files need to be generated as @{/locale/your/resource.example}
+  # These templates will be looked at first, and if they are not found, system will use bundled templates instead.
+  static_resources_directory: /etc/rp-services-catalogue/static/
   admin_entitlements: ['urn:geant:cesnet.cz:res:testCap1#perun.cesnet.cz']
   admin_subs: []
   support_email: "test@example.org"
@@ -27,7 +31,7 @@ oidc:
   issuer: 'https://login.cesnet.cz/oidc/'
   registrationId: 'cesnet'
   client-id: '6d6d5d16-6d42-4d14-8da8-393b7268c780'
-  client-secret: 'AJLezo2Z5rj9SNG_KlAkb_yM7sby3FUozYEkRTPtKLeBD0yfpz33afYLfDWH3JJPRqB7boAPJa9ML5H9TCWhyhU'
+  client-secret: ''
   scopes: ['openid', 'profile', 'eduperson_entitlement']
   redirect_uri: '{baseUrl}/login/oauth2/code/{registrationId}'
   username_attribute: 'sub'

@@ -48,10 +48,14 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
         registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("/webjars/").resourceChain(false);
+            .addResourceLocations("/webjars/").resourceChain(false);
+        if (StringUtils.hasText(applicationProperties.getStaticResourcesDirectory())) {
+            registry.addResourceHandler("/local/**")
+                .addResourceLocations("file:" + applicationProperties.getStaticResourcesDirectory());
+        }
+        registry.addResourceHandler("/**")
+            .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 
     @Override
