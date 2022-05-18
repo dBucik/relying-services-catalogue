@@ -8,17 +8,22 @@
         <version>2.6.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>cz.muni.ics</groupId>
     <artifactId>services-list</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>services-list</name>
     <description>services-list</description>
+    <packaging>war</packaging>
+
     <properties>
         <java.version>11</java.version>
         <bootstrap.version>5.1.3</bootstrap.version>
         <jquery.version>3.6.0</jquery.version>
         <fontawesome.version>6.1.0</fontawesome.version>
     </properties>
+
     <dependencies>
         <!-- SPRING -->
         <dependency>
@@ -87,6 +92,7 @@
     </dependencies>
 
     <build>
+        <finalName>service-catalogue</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
