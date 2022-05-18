@@ -32,7 +32,7 @@
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link" href="#" th:classappend="${site == 'create'} ? 'active'" th:href="@{/admin/create}" th:text="#{nav.link.create_entry}">Create entry</a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" th:if="${#lists.size(locales) > 1}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.link.language}">
                         Language
                     </a>

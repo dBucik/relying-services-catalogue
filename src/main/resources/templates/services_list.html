@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody id="table-data">
-                        <tr class="d-none" th:if="${services == null or #lists.size(services) == 0}">
+                        <tr th:if="${services == null or #lists.size(services) == 0}">
                             <td colspan="4" class="text-center text-muted" th:text="#{services_list.table.no_items}">No items found...</td>
                         </tr>
                         <tr class='clickable-row' th:unless="${services == null and #lists.size(services) == 0}"

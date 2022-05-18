@@ -15,8 +15,8 @@
     </div>
   </div>
   <div th:unless="${#lists.size(locales) > 1}">
-    <label for="name" class="form-label" th:text="#{service_form.form.item_name}">Service name</label>
-    <input type="text" th:type="${type}" class="form-control" id="name" name="name" th:field="*{${__${field}__[__${defaultLocale}__]}}">
+    <label for="name" class="form-label" th:text="#{${label_t_key}}">Service name</label>
+    <input type="text" th:type="${type}" class="form-control" id="name" name="name" th:field="*{__${field}__[__${defaultLocale}__]}">
   </div>
 </div>
 

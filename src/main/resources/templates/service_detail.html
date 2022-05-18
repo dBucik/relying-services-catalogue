@@ -39,7 +39,7 @@
             <div class="tab-content p-0" id="serviceDetailTabContent" th:replace="fragments/service_detail.html :: panes_content(${service})"></div>
         </div>
         <div th:unless="${#lists.size(locales) > 1}">
-            <div class="accordion" th:replace=" fragments/service_detail.html :: service_accordion(${service}, ${locale_key})"></div>
+            <div class="accordion" th:replace=" fragments/service_detail.html :: service_accordion(${service}, ${defaultLocale})"></div>
         </div>
     </div>
 </div>

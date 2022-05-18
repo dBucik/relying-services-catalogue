@@ -111,11 +111,11 @@
 
 
 <th:block th:fragment="multilang_text_value(field, item_t_key)" th:with="value=${field?.getOrDefault(locale_key, null)}">
-    <th:block  th:replace=" fragments/service_detail.html :: text_value(${value}, ${item_t_key})"></th:block>
+    <th:block  th:replace="fragments/service_detail.html :: text_value(${value}, ${item_t_key})"></th:block>
 </th:block>
 
 <th:block th:fragment="multilang_link_value(field, item_t_key)" th:with="value=${field?.getOrDefault(locale_key, null)}">
-    <th:block th:replace=" fragments/service_detail.html :: link_value(${value}, ${item_t_key})"></th:block>
+    <th:block th:replace="fragments/service_detail.html :: link_value(${value}, ${item_t_key})"></th:block>
 </th:block>
 
 <th:block th:fragment="multilang_mail_value(field, item_t_key)" th:with="value=${field?.getOrDefault(locale_key, null)}">

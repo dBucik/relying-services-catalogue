@@ -9,8 +9,8 @@ server:
 
 app:
   # Enabled locales locale - use two character code
-  enabled_locales: ['en', 'cs']
-  #enabled_locales: ['en']
+  #enabled_locales: ['en', 'cs']
+  enabled_locales: ['en']
   # Default locale - use two character code
   default_locale: "en"
   # Files in the directory must be named in a standard Java resource bundle manner. The filename must be "messages".
@@ -24,7 +24,7 @@ oidc:
   issuer: 'https://login.cesnet.cz/oidc/'
   registrationId: 'cesnet'
   client-id: '6d6d5d16-6d42-4d14-8da8-393b7268c780'
-  client-secret: ''
+  client-secret: 'AJLezo2Z5rj9SNG_KlAkb_yM7sby3FUozYEkRTPtKLeBD0yfpz33afYLfDWH3JJPRqB7boAPJa9ML5H9TCWhyhU'
   scopes: ['openid', 'profile', 'eduperson_entitlement']
   redirect_uri: '{baseUrl}/login/oauth2/code/{registrationId}'
   username_attribute: 'sub'
