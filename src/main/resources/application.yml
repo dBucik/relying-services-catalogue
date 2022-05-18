@@ -15,7 +15,10 @@ app:
   default_locale: "en"
   # Files in the directory must be named in a standard Java resource bundle manner. The filename must be "messages".
   # Example files - (EN) messages_en.properties, (CS) messages_cs.properties, (default) messages.properties
-  localization_files_directory: /etc/rp-services-catalogue/
+  localization_files_directory: /etc/rp-services-catalogue/locale/
+  # Files in the directory must be named according to the templates defined in the resources/templates folder.
+  # These templates will be looked at first, and if they are not found, system will use bundled templates instead.
+  template_files_directory: /etc/rp-services-catalogue/templates/
   admin_entitlements: ['urn:geant:cesnet.cz:res:testCap1#perun.cesnet.cz']
   admin_subs: []
   support_email: "test@example.org"

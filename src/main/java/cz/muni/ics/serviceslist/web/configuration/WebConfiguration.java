@@ -21,6 +21,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.FileTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @EnableWebMvc
@@ -113,6 +117,30 @@ public class WebConfiguration implements WebMvcConfigurer {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName(PARAM_LOCALE);
         return lci;
+    }
+
+    @Bean
+    @Primary
+    @Autowired
+    public ITemplateResolver templateResolver(
+        @Qualifier("defaultTemplateResolver") SpringResourceTemplateResolver defaultTemplateResolver
+    ) {
+        if (!StringUtils.hasText(applicationProperties.getTemplateFilesDirectory())) {
+            log.info("No path to filesystem template files provided, using only default messages configured in source...");
+            return defaultTemplateResolver;
+        } else {
+            FileTemplateResolver filesystemTemplateResolver = new FileTemplateResolver();
+            filesystemTemplateResolver.setPrefix(applicationProperties.getTemplateFilesDirectory());
+            filesystemTemplateResolver.setSuffix(".html");
+            filesystemTemplateResolver.setTemplateMode(TemplateMode.HTML);
+            filesystemTemplateResolver.setCharacterEncoding("UTF-8");
+            filesystemTemplateResolver.setOrder(0);
+            filesystemTemplateResolver.setCheckExistence(true);
+
+            defaultTemplateResolver.setOrder(1);
+
+            return filesystemTemplateResolver;
+        }
     }
 
 }
