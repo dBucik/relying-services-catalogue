@@ -20,6 +20,7 @@
     <header class="row mt-3 mb-3">
         <div class="col-12" th:classappend="${#authorization.expr('hasRole(''ROLE_ADMIN'')')} ? 'col-sm-10'" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
             <h2 th:text="#{service_detail.header.heading(${service.id}, ${name ?: notdefined})}">Service #1: Test service</h2>
+            <p th:if="${showEnvironment}" th:utext="#{${'service_detail.header.environment.' + service.environment}}"><b>Environment:</b> production</p>
             <p th:text="${service.description?.getOrDefault(#locale.language, null)} ?: ${service.description?.getOrDefault(defaultLocale, notdefined)}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
         <div class="col-12 col-sm-2" sec:authorize="hasRole('ROLE_ADMIN')">

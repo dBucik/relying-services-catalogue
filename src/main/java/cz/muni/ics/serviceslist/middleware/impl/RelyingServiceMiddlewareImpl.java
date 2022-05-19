@@ -3,6 +3,7 @@ package cz.muni.ics.serviceslist.middleware.impl;
 import cz.muni.ics.serviceslist.common.exceptions.RelyingServiceNotFoundException;
 import cz.muni.ics.serviceslist.data.RelyingServicesRepository;
 import cz.muni.ics.serviceslist.data.model.RelyingServiceDTO;
+import cz.muni.ics.serviceslist.data.enums.RelyingServiceEnvironment;
 import cz.muni.ics.serviceslist.middleware.RelyingServiceMiddleware;
 import cz.muni.ics.serviceslist.web.model.RelyingService;
 import cz.muni.ics.serviceslist.web.model.RelyingServiceDetail;
@@ -26,6 +27,25 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
     public List<RelyingService> getAllRelyingServices() {
         List<RelyingService> res = new ArrayList<>();
         List<RelyingServiceDTO> dtos = repository.findAll();
+        if (!dtos.isEmpty()) {
+            res = dtos.stream().map(this::mapRelyingService).collect(Collectors.toList());
+        }
+        return res;
+    }
+
+    @Override
+    public List<RelyingService> getProductionRelyingServices() {
+        return getRelyingServicesByEnvironment(RelyingServiceEnvironment.PRODUCTION);
+    }
+
+    @Override
+    public List<RelyingService> getTestingRelyingServices() {
+        return getRelyingServicesByEnvironment(RelyingServiceEnvironment.TESTING);
+    }
+
+    private List<RelyingService> getRelyingServicesByEnvironment(RelyingServiceEnvironment environment) {
+        List<RelyingService> res = new ArrayList<>();
+        List<RelyingServiceDTO> dtos = repository.findAllByEnvironment(environment);
         if (!dtos.isEmpty()) {
             res = dtos.stream().map(this::mapRelyingService).collect(Collectors.toList());
         }
@@ -86,6 +106,11 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
         dto.setLoginUrl(input.getLoginUrl());
         dto.setWebsiteUrl(input.getWebsiteUrl());
 
+        RelyingServiceEnvironment env = RelyingServiceEnvironment.resolve(input.getEnvironment());
+        if (env == null) {
+            throw new IllegalArgumentException("Unknown RS environment");
+        }
+        dto.setEnvironment(env);
         dto.setPrivacyPolicy(input.getPrivacyPolicy());
         dto.setAupTos(input.getAupTos());
         dto.setIncidentResponsePolicy(input.getIncidentResponsePolicy());
@@ -107,6 +132,7 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
         rs.setName(dto.getName());
         rs.setProvidingOrganization(dto.getProvidingOrganization());
         rs.setDescription(dto.getDescription());
+        rs.setEnvironment(dto.getEnvironment().getValue());
         return rs;
     }
 
@@ -116,6 +142,7 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
         rs.setId(dto.getId());
         rs.setName(dto.getName());
         rs.setDescription(dto.getDescription());
+        rs.setEnvironment(dto.getEnvironment().getValue());
         rs.setLoginUrl(dto.getLoginUrl());
         rs.setWebsiteUrl(dto.getWebsiteUrl());
 

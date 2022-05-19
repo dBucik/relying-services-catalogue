@@ -17,21 +17,6 @@
 <div class="container flex-grow-1">
     <div th:replace="fragments/errors.html :: error-content('general_error.heading', 'general_error.text')"></div>
 </div>
-<!--<div class="container">-->
-<!--    &lt;!&ndash; HEADER &ndash;&gt;-->
-<!--    <header class="row mt-3 mb-3 text-center">-->
-<!--        <div class="col-12 mt-5 mb-3">-->
-<!--            <i class="fa-solid fa-face-frown-open fa-5x text-info"></i>-->
-<!--        </div>-->
-<!--        <h2 class="col-12 mb-3" th:text="#{general_error.heading}">Oops! Something went wrong...</h2>-->
-<!--        <p class="col-12"><span th:text="#{general_error.text}">We apologize for any inconvenience. Email us about the error at</span> <a href="#" th:href="${'mailto:' + support}" th:text="${support}">support@example.org</a>.</p>-->
-<!--    </header>-->
-<!--    <div class="row text-center">-->
-<!--        <div class="col-12 col-sm-4 offset-sm-4 d-grid">-->
-<!--            <a class="btn btn-primary" href="#" th:href="@{/}" th:text="#{button.go_to_home_page}">Return to main page</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <!-- FOOTER -->
 <footer th:replace="fragments/general.html :: footer"></footer>
 <script th:replace="fragments/general.html :: scripts"></script>

@@ -9,6 +9,10 @@ public interface RelyingServiceMiddleware {
 
     List<RelyingService> getAllRelyingServices();
 
+    List<RelyingService> getProductionRelyingServices();
+
+    List<RelyingService> getTestingRelyingServices();
+
     RelyingServiceDetail getServiceById(Long id) throws RelyingServiceNotFoundException;
 
     Long createService(RelyingServiceDetail relyingService);

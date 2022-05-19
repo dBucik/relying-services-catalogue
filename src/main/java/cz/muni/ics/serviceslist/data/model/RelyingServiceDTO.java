@@ -1,5 +1,6 @@
 package cz.muni.ics.serviceslist.data.model;
 
+import cz.muni.ics.serviceslist.data.enums.RelyingServiceEnvironment;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class RelyingServiceDTO {
     private Long id;
     private Map<String, String> name;
     private Map<String, String> description;
+    private RelyingServiceEnvironment environment;
     private String loginUrl;
     private String websiteUrl;
 

@@ -35,6 +35,14 @@
         <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('name', 'service_form.form.item_name', 'text')"></div>
         <!-- DESCRIPTION -->
         <div class="mb-3" th:replace="fragments/service_form.html :: input_language_aware('description', 'service_form.form.item_description', 'text')"></div>
+
+        <div class="mb-3">
+            <label class="form-label" for="input-environment" th:text="#{service_form.form.item_environment}">Select input</label>
+            <select id="input-environment" name="input-environment" class="form-select" aria-label="Default select example" required th:field="*{environment}">
+                <option value="testing"  th:each="env: ${T(cz.muni.ics.serviceslist.data.enums.RelyingServiceEnvironment).values()}"
+                        th:value="${env.getValue()}" th:text="#{${'service_form.form.item_environment.value_' + env.getValue()}}">Test</option>
+            </select>
+        </div>
         <!-- LOGIN URL -->
         <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('loginUrl', 'service_form.form.item_login_url', 'url')"></div>
         <!-- SERVICE WEBSITE -->

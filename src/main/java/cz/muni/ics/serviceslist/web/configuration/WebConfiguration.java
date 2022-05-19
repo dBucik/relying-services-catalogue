@@ -52,7 +52,7 @@ public class WebConfiguration implements WebMvcConfigurer {
             .addResourceLocations("/webjars/").resourceChain(false);
         if (StringUtils.hasText(applicationProperties.getStaticResourcesDirectory())) {
             registry.addResourceHandler("/local/**")
-                .addResourceLocations("file:" + applicationProperties.getStaticResourcesDirectory());
+                    .addResourceLocations("file:" + applicationProperties.getStaticResourcesDirectory());
         }
         registry.addResourceHandler("/**")
             .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);

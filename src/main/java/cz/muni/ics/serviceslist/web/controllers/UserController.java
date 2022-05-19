@@ -45,6 +45,9 @@ public class UserController extends AppController {
     public static final String ATTR_SITE_VALUE_CREATE = "create";
     public static final String ATTR_SITE_VALUE_UPDATE = "update";
     public static final String ATTR_SITE_VALUE_REMOVE = "remove";
+
+    public static final String MODEL_ATTR_SHOW_ENVIRONMENT = "showEnvironment";
+
     public static final String MODEL_ATTR_SERVICES = "services";
     public static final String MODEL_ATTR_SERVICE = "service";
 
@@ -71,8 +74,15 @@ public class UserController extends AppController {
 
     @GetMapping(path = PATH_HOME)
     public String list(Model model) {
-        List<RelyingService> serviceList = relyingServiceMiddleware.getAllRelyingServices();
-        model.addAttribute(MODEL_ATTR_SERVICES, serviceList);
+        boolean displayTestServices = applicationProperties.isShowEnvironment();
+        List<RelyingService> services;
+        if (displayTestServices) {
+            services = relyingServiceMiddleware.getAllRelyingServices();
+        } else {
+            services = relyingServiceMiddleware.getProductionRelyingServices();
+        }
+
+        model.addAttribute(MODEL_ATTR_SERVICES, services);
         model.addAttribute(MODEL_ATTR_SITE, ATTR_SITE_VALUE_HOME);
         return VIEW_LIST_SERVICES;
     }

@@ -38,22 +38,24 @@
                             <th scope="col" th:text="#{services_list.table.header.name}">Name</th>
                             <th scope="col" th:text="#{services_list.table.header.description}">Short description</th>
                             <th scope="col" th:text="#{services_list.table.header.organization}">Providing organization</th>
+                            <th scope="col" th:if="${showEnvironment}" th:text="#{services_list.table.header.environment}">Environment</th>
                         </tr>
                     </thead>
-                    <tbody id="table-data">
+                    <tbody id="table-prod-services-data">
                         <tr th:if="${services == null or #lists.size(services) == 0}">
                             <td colspan="4" class="text-center text-muted" th:text="#{services_list.table.no_items}">No items found...</td>
                         </tr>
                         <tr class='clickable-row' th:unless="${services == null and #lists.size(services) == 0}"
                             th:each="service: ${services}" th:data-href="${'/' + service.id}"
                             th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},
-                            description=${service.description?.getOrDefault(#locale.language, null) ?: service.description?.getOrDefault(defaultLocale, null)},
-                            providingOrganization=${service.providingOrganization?.getOrDefault(#locale.language, null) ?: service.providingOrganization?.getOrDefault(defaultLocale, null)},
-                            notdefined=#{not_defined_text}">
+                                description=${service.description?.getOrDefault(#locale.language, null) ?: service.description?.getOrDefault(defaultLocale, null)},
+                                providingOrganization=${service.providingOrganization?.getOrDefault(#locale.language, null) ?: service.providingOrganization?.getOrDefault(defaultLocale, null)},
+                                notdefined=#{not_defined_text}">
                             <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${service.id}">1</td>
                             <td th:text="${name}">Service name</td>
                             <td th:text="${description}">Desc1</td>
                             <td th:text="${providingOrganization}">ELIXIR-CZ</td>
+                            <td th:if="${showEnvironment}" th:text="#{${'services_list.table.data.environment.' + service.environment}}">Production</td>
                         </tr>
                     </tbody>
                 </table>

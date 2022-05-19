@@ -46,6 +46,10 @@
                 <div class="col-12">
                     <div th:replace=" fragments/service_detail.html :: multilang_text_value(${service.name}, 'service_detail.section.service_details.name')"></div>
                     <div th:replace=" fragments/service_detail.html :: multilang_text_value(${service.description}, 'service_detail.section.service_details.description')"></div>
+                    <div th:if="${showEnvironment}">
+                        <b th:text="#{service_detail.section.service_details.environment}">Environment:</b>
+                        <span th:text="#{${'service_detail.section.service_details.environment.value_' + service.environment}}">TESTING</span>
+                    </div>
                 </div>
             </div>
             <hr class="mb-3"/>
