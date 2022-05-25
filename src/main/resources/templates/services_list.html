@@ -17,15 +17,40 @@
 <nav th:replace="fragments/general.html :: navbar"></nav>
 <div class="container flex-grow-1">
     <!-- HEADER -->
-    <header class="row mt-3 mb-1">
-        <h1 class="col-12 text-center" th:text="#{services_list.header.heading}">List of Services</h1>
-        <p th:text="#{services_list.header.text}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <header class="row mt-3 mb-1" >
+        <th:block th:if="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}">
+            <h1 class="col-12 text-center" th:text="#{services_list.header.heading}">List of Services</h1>
+            <p th:text="#{services_list.header.text}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </th:block>
+        <th:block th:unless="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}">
+            <h1 class="col-12 text-center" th:text="#{services_list.header.test_services_heading}">List of Services</h1>
+            <p th:text="#{services_list.header.test_services_text}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </th:block>
     </header>
 
     <!-- MAIN CONTENT -->
     <div class="row mb-3" sec:authorize="hasRole('ROLE_ADMIN')">
-        <div class="col-12 col-sm-2 offset-sm-10 d-grid">
-            <a href="#" class="btn btn-primary" th:href="@{/admin/create}" th:text="#{services_list.button.add_new}">Add new entry</a>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 -col-sm-4 col-md-3">
+                    <p class="mb-0">
+                        <b th:text="#{services_list.active_environment}">Active environment:</b> <span th:text="#{${'services_list.env.' + servicesEnvironment.getValue().toLowerCase()}}">Testing</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 d-grid mb-md-0 mb-3">
+                    <a href="#" class="btn btn-primary" th:if="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}"
+                       th:href="@{/admin/testServices}" th:text="#{services_list.button.switch_environment}">Switch environment</a>
+                    <a href="#" class="btn btn-primary" th:unless="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}"
+                       th:href="@{/}" th:text="#{services_list.button.switch_environment}">Switch environment</a>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 offset-md-4 d-grid">
+                    <a href="#" class="btn btn-primary" th:href="@{/admin/create}" th:text="#{services_list.button.add_new}">Add new entry</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row mb-3">
@@ -55,7 +80,7 @@
                             <td th:text="${name}">Service name</td>
                             <td th:text="${description}">Desc1</td>
                             <td th:text="${providingOrganization}">ELIXIR-CZ</td>
-                            <td th:if="${showEnvironment}" th:text="#{${'services_list.table.data.environment.' + service.environment}}">Production</td>
+                            <td th:if="${showEnvironment}" th:text="#{${'services_list.table.data.environment.' + service.environment.toLowerCase()}}">Production</td>
                         </tr>
                     </tbody>
                 </table>

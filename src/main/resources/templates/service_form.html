@@ -40,7 +40,7 @@
             <label class="form-label" for="input-environment" th:text="#{service_form.form.item_environment}">Select input</label>
             <select id="input-environment" name="input-environment" class="form-select" aria-label="Default select example" required th:field="*{environment}">
                 <option value="testing"  th:each="env: ${T(cz.muni.ics.serviceslist.data.enums.RelyingServiceEnvironment).values()}"
-                        th:value="${env.getValue()}" th:text="#{${'service_form.form.item_environment.value_' + env.getValue()}}">Test</option>
+                        th:value="${env.getValue()}" th:text="#{${'service_form.form.item_environment.value.' + env.getValue().toLowerCase()}}">Test</option>
             </select>
         </div>
         <!-- LOGIN URL -->

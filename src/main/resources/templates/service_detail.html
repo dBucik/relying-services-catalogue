@@ -18,12 +18,12 @@
 <div class="container flex-grow-1" th:object="${service}">
     <!-- HEADER -->
     <header class="row mt-3 mb-3">
-        <div class="col-12" th:classappend="${#authorization.expr('hasRole(''ROLE_ADMIN'')')} ? 'col-sm-10'" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
+        <div class="col-12" th:classappend="${#authorization.expr('hasRole(''ROLE_ADMIN'')')} ? 'col-md-9'" th:with="name=${service.name?.getOrDefault(#locale.language, null) ?: service.name?.getOrDefault(defaultLocale, null)},notdefined=#{not_defined_text}">
             <h2 th:text="#{service_detail.header.heading(${service.id}, ${name ?: notdefined})}">Service #1: Test service</h2>
             <p th:if="${showEnvironment}" th:utext="#{${'service_detail.header.environment.' + service.environment}}"><b>Environment:</b> production</p>
             <p th:text="${service.description?.getOrDefault(#locale.language, null)} ?: ${service.description?.getOrDefault(defaultLocale, notdefined)}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
-        <div class="col-12 col-sm-2" sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="col-12 col-md-3" sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="d-grid gap-2">
                 <a href="#" class="btn btn-primary" th:href="@{/admin/update/{id}(id=${service.id})}" th:text="#{service_detail.header.button_modify}">Modify</a>
                 <a href="#" class="btn btn-danger" th:href="@{/admin/remove/{id}(id=${service.id})}" th:text="#{service_detail.header.button_remove}">Remove</a>
@@ -36,7 +36,7 @@
     <!-- MAIN CONTENT -->
     <div class="row mb-5">
         <div th:if="${#lists.size(locales) > 1}">
-            <ul class="nav nav-tabs" id="serviceDetailTab" role="tablist" th:replace="fragments/service_detail.html :: panes_nav()"></ul>
+            <ul class="nav nav-tabs" id="serviceDetailTab" role="tablist" th:replace="fragments/service_detail.html :: panes_nav"></ul>
             <div class="tab-content p-0" id="serviceDetailTabContent" th:replace="fragments/service_detail.html :: panes_content(${service})"></div>
         </div>
         <div th:unless="${#lists.size(locales) > 1}">

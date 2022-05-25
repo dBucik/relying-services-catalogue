@@ -40,7 +40,7 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
 
     @Override
     public List<RelyingService> getTestingRelyingServices() {
-        return getRelyingServicesByEnvironment(RelyingServiceEnvironment.TESTING);
+        return getRelyingServicesByEnvironment(RelyingServiceEnvironment.TEST);
     }
 
     private List<RelyingService> getRelyingServicesByEnvironment(RelyingServiceEnvironment environment) {

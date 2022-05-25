@@ -10,8 +10,8 @@ import lombok.Getter;
 @Getter
 public enum RelyingServiceEnvironment {
 
-    TESTING("testing"),
-    PRODUCTION("production");
+    TEST("TEST"),
+    PRODUCTION("PRODUCTION");
 
     private final String value;
 
