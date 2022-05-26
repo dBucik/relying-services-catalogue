@@ -35,7 +35,7 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="services-table">
                     <thead class="table-dark">
                         <tr>
                             <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">#</th>
@@ -80,6 +80,19 @@
 <!-- FOOTER -->
 <footer th:replace="fragments/general.html :: footer"></footer>
 <script th:replace="fragments/general.html :: scripts"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"
+        th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"
+        th:src="@{/webjars/datatables/js/dataTables.bootstrap5.min.js}"></script>
+<!-- CANNOT BE USED AT THE MOMENT, need to upgrade version -->
+<!--<script type="application/json" src="https://cdn.datatables.net/plug-ins/1.12.1/i18n/cs.json"-->
+<!--        th:src="@{/webjars/datatables-plugins/i18n/{lang}.json(lang=${#locale.language})}"></script>-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const tableLang = /*[[${#locale.language}]]*/ 'en';
+    const tableI18nLocation = /*[[@{/js/datatables/{lang}.json(lang=${#locale.language})}]]*/ 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/cs.json';
+    /*]]>*/
+</script>
 <script type="text/javascript" src="../static/js/services_list.js" th:src="@{/js/services_list.js}"></script>
 </body>
 </html>

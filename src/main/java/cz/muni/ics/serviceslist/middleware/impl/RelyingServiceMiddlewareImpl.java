@@ -105,6 +105,7 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
         dto.setDescription(input.getDescription());
         dto.setLoginUrl(input.getLoginUrl());
         dto.setWebsiteUrl(input.getWebsiteUrl());
+        dto.setRpIdentifier(input.getRpIdentifier());
 
         RelyingServiceEnvironment env = RelyingServiceEnvironment.resolve(input.getEnvironment());
         if (env == null) {
