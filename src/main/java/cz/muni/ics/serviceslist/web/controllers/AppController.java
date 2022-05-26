@@ -1,7 +1,6 @@
 package cz.muni.ics.serviceslist.web.controllers;
 
 import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_DEFAULT_LOCALE;
-import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_SHOW_ENVIRONMENT;
 import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_LOCALES;
 import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_SUPPORT;
 
@@ -22,7 +21,6 @@ public abstract class AppController {
         model.addAttribute(MODEL_ATTR_SUPPORT, applicationProperties.getSupportEmail());
         model.addAttribute(MODEL_ATTR_LOCALES, applicationProperties.getEnabledLocales());
         model.addAttribute(MODEL_ATTR_DEFAULT_LOCALE, applicationProperties.getDefaultLocale());
-        model.addAttribute(MODEL_ATTR_SHOW_ENVIRONMENT, applicationProperties.isShowEnvironment());
     }
 
 }

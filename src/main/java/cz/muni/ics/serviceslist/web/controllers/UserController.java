@@ -1,6 +1,5 @@
 package cz.muni.ics.serviceslist.web.controllers;
 
-import static cz.muni.ics.serviceslist.web.GuiConstants.PATH_ADMIN_TEST_SERVICES;
 import static cz.muni.ics.serviceslist.web.GuiConstants.PATH_HOME;
 import static cz.muni.ics.serviceslist.web.GuiConstants.PATH_LOGIN;
 import static cz.muni.ics.serviceslist.web.GuiConstants.VIEW_DELETE_CONFIRM;
@@ -11,7 +10,6 @@ import static cz.muni.ics.serviceslist.web.GuiConstants.VIEW_SERVICE_FORM;
 import cz.muni.ics.serviceslist.ApplicationProperties;
 import cz.muni.ics.serviceslist.common.exceptions.BadRequestParameterException;
 import cz.muni.ics.serviceslist.common.exceptions.RelyingServiceNotFoundException;
-import cz.muni.ics.serviceslist.data.enums.RelyingServiceEnvironment;
 import cz.muni.ics.serviceslist.middleware.RelyingServiceMiddleware;
 import cz.muni.ics.serviceslist.web.GuiConstants;
 import cz.muni.ics.serviceslist.web.model.RelyingService;
@@ -43,14 +41,10 @@ public class UserController extends AppController {
     public static final String ATTR_ACTION_VALUE_DELETE = "delete";
 
     public static final String ATTR_SITE_VALUE_HOME = "home";
-
-    public static final String ATTR_SITE_VALUE_HOME_TEST_SERVICES = "test_services";
     public static final String ATTR_SITE_VALUE_DETAIL = "detail";
     public static final String ATTR_SITE_VALUE_CREATE = "create";
     public static final String ATTR_SITE_VALUE_UPDATE = "update";
     public static final String ATTR_SITE_VALUE_REMOVE = "remove";
-
-    public static final String MODEL_ATTR_SHOW_ENVIRONMENT = "showEnvironment";
 
     public static final String MODEL_ATTR_SERVICES_ENVIRONMENT = "servicesEnvironment";
 
@@ -80,19 +74,9 @@ public class UserController extends AppController {
 
     @GetMapping(path = PATH_HOME)
     public String list(Model model) {
-        List<RelyingService> services = relyingServiceMiddleware.getProductionRelyingServices();
-        model.addAttribute(MODEL_ATTR_SERVICES_ENVIRONMENT, RelyingServiceEnvironment.PRODUCTION);
+        List<RelyingService> services = relyingServiceMiddleware.getAllRelyingServices();
         model.addAttribute(MODEL_ATTR_SERVICES, services);
         model.addAttribute(MODEL_ATTR_SITE, ATTR_SITE_VALUE_HOME);
-        return VIEW_LIST_SERVICES;
-    }
-
-    @GetMapping(path = PATH_ADMIN_TEST_SERVICES)
-    public String listTestServices(Model model) {
-        List<RelyingService> services = relyingServiceMiddleware.getTestingRelyingServices();
-        model.addAttribute(MODEL_ATTR_SERVICES, services);
-        model.addAttribute(MODEL_ATTR_SERVICES_ENVIRONMENT, RelyingServiceEnvironment.TEST);
-        model.addAttribute(MODEL_ATTR_SITE, ATTR_SITE_VALUE_HOME_TEST_SERVICES);
         return VIEW_LIST_SERVICES;
     }
 

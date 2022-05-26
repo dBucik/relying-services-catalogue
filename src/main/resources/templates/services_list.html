@@ -18,36 +18,15 @@
 <div class="container flex-grow-1">
     <!-- HEADER -->
     <header class="row mt-3 mb-1" >
-        <th:block th:if="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}">
-            <h1 class="col-12 text-center" th:text="#{services_list.header.heading}">List of Services</h1>
-            <p th:text="#{services_list.header.text}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </th:block>
-        <th:block th:unless="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}">
-            <h1 class="col-12 text-center" th:text="#{services_list.header.test_services_heading}">List of Services</h1>
-            <p th:text="#{services_list.header.test_services_text}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </th:block>
+        <h1 class="col-12 text-center" th:text="#{services_list.header.heading}">List of Services</h1>
+        <p th:text="#{services_list.header.text}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed convallis magna eu sem. Mauris tincidunt sem sed arcu. In rutrum. In sem justo, commodo ut, suscipit at, pharetra vitae, orci. Integer imperdiet lectus quis justo. Phasellus rhoncus. Pellentesque sapien. Etiam egestas wisi a erat. Donec ipsum massa, ullamcorper in, auctor et, scelerisque sed, est. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </header>
 
     <!-- MAIN CONTENT -->
     <div class="row mb-3" sec:authorize="hasRole('ROLE_ADMIN')">
         <div class="col-12">
             <div class="row">
-                <div class="col-12 -col-sm-4 col-md-3">
-                    <p class="mb-0">
-                        <b th:text="#{services_list.active_environment}">Active environment:</b> <span th:text="#{${'services_list.env.' + servicesEnvironment.getValue().toLowerCase()}}">Testing</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 d-grid mb-md-0 mb-3">
-                    <a href="#" class="btn btn-primary" th:if="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}"
-                       th:href="@{/admin/testServices}" th:text="#{services_list.button.switch_environment}">Switch environment</a>
-                    <a href="#" class="btn btn-primary" th:unless="${site != T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES}"
-                       th:href="@{/}" th:text="#{services_list.button.switch_environment}">Switch environment</a>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 offset-md-4 d-grid">
+                <div class="col-12 col-sm-6 col-md-4 offset-md-8 d-grid">
                     <a href="#" class="btn btn-primary" th:href="@{/admin/create}" th:text="#{services_list.button.add_new}">Add new entry</a>
                 </div>
             </div>
@@ -61,9 +40,14 @@
                         <tr>
                             <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">#</th>
                             <th scope="col" th:text="#{services_list.table.header.name}">Name</th>
-                            <th scope="col" th:text="#{services_list.table.header.description}">Short description</th>
-                            <th scope="col" th:text="#{services_list.table.header.organization}">Providing organization</th>
-                            <th scope="col" th:if="${showEnvironment}" th:text="#{services_list.table.header.environment}">Environment</th>
+                            <th:block sec:authorize="isAnonymous()">
+                                <th scope="col" th:text="#{services_list.table.header.description}">Short description</th>
+                                <th scope="col" th:text="#{services_list.table.header.organization}">Providing organization</th>
+                            </th:block>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                <th scope="col" th:text="#{services_list.table.header.rp_identifier}">RP Identifier</th>
+                                <th scope="col" th:text="#{services_list.table.header.environment}">Environment</th>
+                            </th:block>
                         </tr>
                     </thead>
                     <tbody id="table-prod-services-data">
@@ -78,9 +62,14 @@
                                 notdefined=#{not_defined_text}">
                             <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${service.id}">1</td>
                             <td th:text="${name}">Service name</td>
-                            <td th:text="${description}">Desc1</td>
-                            <td th:text="${providingOrganization}">ELIXIR-CZ</td>
-                            <td th:if="${showEnvironment}" th:text="#{${'services_list.table.data.environment.' + service.environment.toLowerCase()}}">Production</td>
+                            <th:block sec:authorize="isAnonymous()">
+                                <td th:text="${description}">Desc1</td>
+                                <td th:text="${providingOrganization}">ELIXIR-CZ</td>
+                            </th:block>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                <td th:text="${service.rpIdentifier}">testCLientID</td>
+                                <td th:text="#{${'services_list.table.data.environment.' + service.environment.toLowerCase()}}">Production</td>
+                            </th:block>
                         </tr>
                     </tbody>
                 </table>

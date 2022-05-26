@@ -30,10 +30,6 @@
                     <a class="nav-link" th:classappend="${site == T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME} ? 'active'" aria-current="page" href="#" th:href="@{/}" th:text="#{nav.link.home}">Home</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link" href="#" th:classappend="${site == T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_HOME_TEST_SERVICES} ? 'active'"
-                       th:href="@{/admin/testServices}" th:text="#{nav.link.test_services}">Test services</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link" href="#" th:classappend="${site == T(cz.muni.ics.serviceslist.web.controllers.UserController).ATTR_SITE_VALUE_CREATE} ? 'active'" th:href="@{/admin/create}" th:text="#{nav.link.create_entry}">Create entry</a>
                 </li>
                 <li class="nav-item dropdown" th:if="${#lists.size(locales) > 1}">

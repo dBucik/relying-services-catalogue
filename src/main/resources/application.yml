@@ -26,7 +26,6 @@ app:
   admin_entitlements: ['urn:geant:cesnet.cz:res:testCap1#perun.cesnet.cz']
   admin_subs: []
   support_email: "test@example.org"
-  show_environment: true
 
 oidc:
   issuer: 'https://login.cesnet.cz/oidc/'

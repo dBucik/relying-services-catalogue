@@ -22,5 +22,6 @@ public class RelyingService {
     private Map<String, String> description = new HashMap<>();
     private Map<String, String> providingOrganization = new HashMap<>();
     private String environment;
+    private String rpIdentifier;
 
 }

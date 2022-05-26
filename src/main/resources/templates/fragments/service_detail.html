@@ -50,6 +50,7 @@
                         <b th:text="#{service_detail.section.service_details.environment}">Environment:</b>
                         <span th:text="#{${'service_detail.section.service_details.environment.value.' + service.environment.toLowerCase()}}">TESTING</span>
                     </div>
+                    <div th:replace=" fragments/service_detail.html :: text_value(${service.rpIdentifier}, 'service_detail.section.service_details.rp_identifier')"></div>
                 </div>
             </div>
             <hr class="mb-3"/>

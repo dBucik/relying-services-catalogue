@@ -43,6 +43,8 @@
                         th:value="${env.getValue()}" th:text="#{${'service_form.form.item_environment.value.' + env.getValue().toLowerCase()}}">Test</option>
             </select>
         </div>
+        <!-- RP IDENTIFIER -->
+        <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('rpIdentifier', 'service_form.form.item_rp_identifier', 'text')"></div>
         <!-- LOGIN URL -->
         <div class="mb-3" th:replace="fragments/service_form.html :: input_simple('loginUrl', 'service_form.form.item_login_url', 'url')"></div>
         <!-- SERVICE WEBSITE -->

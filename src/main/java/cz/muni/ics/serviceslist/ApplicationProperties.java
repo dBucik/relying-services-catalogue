@@ -37,8 +37,6 @@ public class ApplicationProperties {
 
     private String supportEmail;
 
-    private boolean showEnvironment = false;
-
     @PostConstruct
     public void init() {
         if (!StringUtils.hasText(defaultLocale)) {

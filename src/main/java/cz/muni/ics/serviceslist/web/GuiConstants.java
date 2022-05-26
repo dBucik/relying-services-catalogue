@@ -10,8 +10,6 @@ public interface GuiConstants {
     String PATH_ADMIN_UPDATE = PATH_ADMIN + "/update";
     String PATH_ADMIN_REMOVE = PATH_ADMIN + "/remove";
 
-    String PATH_ADMIN_TEST_SERVICES = PATH_ADMIN + "/testServices";
-
     // == ERROR PATHS ==
 
     String PATH_ERROR = "/error";

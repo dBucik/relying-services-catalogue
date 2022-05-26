@@ -133,6 +133,7 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
         rs.setProvidingOrganization(dto.getProvidingOrganization());
         rs.setDescription(dto.getDescription());
         rs.setEnvironment(dto.getEnvironment().getValue());
+        rs.setRpIdentifier(dto.getRpIdentifier());
         return rs;
     }
 
@@ -145,6 +146,7 @@ public class RelyingServiceMiddlewareImpl implements RelyingServiceMiddleware {
         rs.setEnvironment(dto.getEnvironment().getValue());
         rs.setLoginUrl(dto.getLoginUrl());
         rs.setWebsiteUrl(dto.getWebsiteUrl());
+        rs.setRpIdentifier(dto.getRpIdentifier());
 
         rs.setPrivacyPolicy(dto.getPrivacyPolicy());
         rs.setAupTos(dto.getAupTos());

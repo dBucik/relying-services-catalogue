@@ -29,6 +29,7 @@ public class RelyingServiceDTO {
     private Map<String, String> name;
     private Map<String, String> description;
     private RelyingServiceEnvironment environment;
+    private String rpIdentifier;
     private String loginUrl;
     private String websiteUrl;
 
