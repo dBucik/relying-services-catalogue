@@ -12,12 +12,15 @@ import cz.muni.ics.serviceslist.common.exceptions.BadRequestParameterException;
 import cz.muni.ics.serviceslist.common.exceptions.RelyingServiceNotFoundException;
 import cz.muni.ics.serviceslist.middleware.RelyingServiceMiddleware;
 import cz.muni.ics.serviceslist.web.GuiConstants;
+import cz.muni.ics.serviceslist.web.configuration.SecurityConfiguration;
 import cz.muni.ics.serviceslist.web.model.RelyingService;
 import cz.muni.ics.serviceslist.web.model.RelyingServiceDetail;
 import java.util.List;
 import java.util.StringJoiner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,8 +76,17 @@ public class UserController extends AppController {
     }
 
     @GetMapping(path = PATH_HOME)
-    public String list(Model model) {
-        List<RelyingService> services = relyingServiceMiddleware.getAllRelyingServices();
+    public String list(Model model, Authentication authentication) {
+        List<RelyingService> services;
+        if (authentication != null
+            && authentication.isAuthenticated()
+            && authentication.getAuthorities() != null
+            && authentication.getAuthorities().contains(SecurityConfiguration.ROLE_ADMIN)
+        ) {
+            services = relyingServiceMiddleware.getAllRelyingServices();
+        } else {
+            services = relyingServiceMiddleware.getProductionRelyingServices();
+        }
         model.addAttribute(MODEL_ATTR_SERVICES, services);
         model.addAttribute(MODEL_ATTR_SITE, ATTR_SITE_VALUE_HOME);
         return VIEW_LIST_SERVICES;
