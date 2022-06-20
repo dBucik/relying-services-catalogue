@@ -1,6 +1,7 @@
 package cz.muni.ics.serviceslist.web.controllers;
 
 import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_DEFAULT_LOCALE;
+import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_FAVICON_PATH;
 import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_LOCALES;
 import static cz.muni.ics.serviceslist.web.controllers.UserController.MODEL_ATTR_SUPPORT;
 
@@ -21,6 +22,11 @@ public abstract class AppController {
         model.addAttribute(MODEL_ATTR_SUPPORT, applicationProperties.getSupportEmail());
         model.addAttribute(MODEL_ATTR_LOCALES, applicationProperties.getEnabledLocales());
         model.addAttribute(MODEL_ATTR_DEFAULT_LOCALE, applicationProperties.getDefaultLocale());
+        String faviconPath = "/img/favicon.ico";
+        if (applicationProperties.isFaviconLocal()) {
+            faviconPath = "/local" + faviconPath;
+        }
+        model.addAttribute(MODEL_ATTR_FAVICON_PATH, faviconPath);
     }
 
 }
