@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/dBucik/relying-services-catalogue/compare/v1.0.1...v1.1.0) (2022-06-20)
+
+
+### Features
+
+* 🎸 Local favicon enabled ([f69ffb9](https://github.com/dBucik/relying-services-catalogue/commit/f69ffb95c495d225fb845e37733d8fa42606bd31))
+
 ## [1.0.1](https://github.com/dBucik/relying-services-catalogue/compare/v1.0.0...v1.0.1) (2022-06-15)
 
 
