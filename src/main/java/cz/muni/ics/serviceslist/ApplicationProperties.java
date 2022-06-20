@@ -34,8 +34,8 @@ public class ApplicationProperties {
     private String defaultLocale = "en";
     private Set<String> adminEntitlements = new HashSet<>();
     private Set<String> adminSubs = new HashSet<>();
-
     private String supportEmail;
+    private boolean faviconLocal = false;
 
     @PostConstruct
     public void init() {
