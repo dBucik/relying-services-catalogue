@@ -33,7 +33,7 @@ oidc:
   registrationId: 'cesnet'
   client-id: '6d6d5d16-6d42-4d14-8da8-393b7268c780'
   client-secret: ''
-  scopes: ['openid', 'profile', 'eduperson_entitlement']
+  scopes: ['openid', 'profile', 'eduperson_entitlement'] # NOTE: profile has to be set at least to fetch userinfo
   redirect_uri: '{baseUrl}/login/oauth2/code/{registrationId}'
   username_attribute: 'sub'
 

@@ -41,6 +41,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 @EnableWebSecurity
@@ -74,8 +75,12 @@ public class OAuth2LoginConfiguration {
                 if (authority instanceof OidcUserAuthority) {
                     OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
                     Map<String, Object> claims = new HashMap<>();
-                    claims.putAll(oidcUserAuthority.getIdToken().getClaims());
-                    claims.putAll(oidcUserAuthority.getUserInfo().getClaims());
+                    if (oidcUserAuthority.getIdToken() != null) {
+                        claims.putAll(oidcUserAuthority.getIdToken().getClaims());
+                    }
+                    if (oidcUserAuthority.getUserInfo() != null) {
+                        claims.putAll(oidcUserAuthority.getUserInfo().getClaims());
+                    }
                     mappedAuthorities.addAll(mapAuthoritiesFromAttributes(claims));
                 } else if (authority instanceof OAuth2UserAuthority) {
                     OAuth2UserAuthority oauth2UserAuthority = (OAuth2UserAuthority)authority;
@@ -89,23 +94,37 @@ public class OAuth2LoginConfiguration {
     }
 
     private Set<SimpleGrantedAuthority> mapAuthoritiesFromAttributes(Map<String, Object> claims) {
-        boolean isAdmin = false;
-        if (!applicationProperties.getAdminSubs().isEmpty()) {
-            String sub = (String) claims.getOrDefault(IdTokenClaimNames.SUB, null);
-            if (sub != null) {
-                isAdmin = applicationProperties.getAdminSubs().contains(sub);
+        boolean isAdminBySub = false;
+        boolean isAdminByEntitlement = false;
+        String sub = (String) claims.getOrDefault(IdTokenClaimNames.SUB, null);
+
+        if (applicationProperties.getAdminSubs() != null
+            && !applicationProperties.getAdminSubs().isEmpty()
+            && StringUtils.hasText(sub))
+        {
+            isAdminBySub = applicationProperties.getAdminSubs().contains(sub);
+            if (isAdminBySub) {
+                log.info("User '{}' mapped to admin because of listed identifier '{}'", sub, sub);
             }
         }
-        if (!applicationProperties.getAdminEntitlements().isEmpty()) {
-            List<String> entitlements = (List<String>) claims.getOrDefault("eduperson_entitlement", new ArrayList<>());
+        if (applicationProperties.getAdminEntitlements() != null
+            && !applicationProperties.getAdminEntitlements().isEmpty())
+        {
+            List<String> entitlements = (List<String>) claims.getOrDefault(
+                "eduperson_entitlement", new ArrayList<>());
             if (entitlements != null && entitlements.size() > 0) {
                 Set<String> entitlementsSet = new HashSet<>(entitlements);
-                isAdmin = !Collections.disjoint(
+                isAdminByEntitlement = !Collections.disjoint(
                     entitlementsSet, applicationProperties.getAdminEntitlements());
+                if (isAdminByEntitlement) {
+                    log.info("User '{}' mapped to admin because of entitlements '{}'", sub,
+                        entitlementsSet.retainAll(applicationProperties.getAdminEntitlements()));
+                }
             }
+
         }
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        if (isAdmin) {
+        if (isAdminBySub || isAdminByEntitlement) {
             authorities.add(ROLE_ADMIN);
         }
         return authorities;
