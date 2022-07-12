@@ -11,7 +11,7 @@
 
     <groupId>cz.muni.ics</groupId>
     <artifactId>services-list</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 
     <name>services-list</name>
     <description>services-list</description>

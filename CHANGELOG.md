@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/dBucik/relying-services-catalogue/compare/v1.1.1...v1.1.2) (2022-07-12)
+
+
+### Bug Fixes
+
+* 🐛 Fix potential issues with claims mapping ([25d342e](https://github.com/dBucik/relying-services-catalogue/commit/25d342e684c9596c6fce0b1e94601de1da0ac0ac))
+
 ## [1.1.1](https://github.com/dBucik/relying-services-catalogue/compare/v1.1.0...v1.1.1) (2022-06-27)
 
 
